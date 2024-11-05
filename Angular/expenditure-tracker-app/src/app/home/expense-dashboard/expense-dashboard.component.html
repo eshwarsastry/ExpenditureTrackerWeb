@@ -1,0 +1,44 @@
+<div class="row">
+  <mat-grid-list cols="4">
+    <mat-grid-tile [rowspan]="1" [colspan]="1">
+      <mat-card class="prediction-card">
+        <mat-card-title>Prediction board</mat-card-title>
+        <mat-card-content>
+          View the future expense predictions based on the insights from your previous transactions.
+        </mat-card-content>
+        <mat-card-footer>
+        </mat-card-footer>
+      </mat-card>
+    </mat-grid-tile>
+    <mat-grid-tile [rowspan]="1" [colspan]="1">
+      <mat-card class="add-expense-card" (click)="openAddTransactionCategoryDialog()">
+        <mat-card-title>Add a new transaction category</mat-card-title>
+        <mat-card-content>
+          Add and store transactions categories.
+        </mat-card-content>
+        <mat-card-footer>
+        </mat-card-footer>
+      </mat-card>
+    </mat-grid-tile>
+    <mat-grid-tile [rowspan]="1" [colspan]="1">
+      <mat-card class="add-expense-card" >
+        <mat-card-title>Add a new transaction</mat-card-title>
+        <mat-card-content>
+          Add and store transactions.
+        </mat-card-content>
+        <mat-card-footer>
+        </mat-card-footer>
+      </mat-card>
+    </mat-grid-tile>
+    <mat-grid-tile [rowspan]="2" [colspan]="1">
+      <mat-card class="previous-expense-list">
+        <mat-card-title>Last transactions</mat-card-title>
+        <mat-card-content>
+          View previous transactions
+        </mat-card-content>
+        <mat-card-footer>
+        </mat-card-footer>
+      </mat-card>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>

@@ -1,0 +1,71 @@
+﻿using ExpenditureTrackerWeb.Shared.DbContexts;
+using ExpenditureTrackerWeb.Shared.Dto;
+using ExpenditureTrackerWeb.Shared.Entities;
+using ExpenditureTrackerWeb.Shared.Mappers;
+using Microsoft.EntityFrameworkCore;
+
+namespace ExpenditureTrackerWeb.Shared.Services
+{
+    public interface IExpensesService
+    {
+        public Task<IEnumerable<ExpenseDto>> GetAllByUserId(int userId);
+        public Task<ExpenseDto> CreateNewLedgerEntry(ExpenseDto expenseDto);
+
+    }
+    public class ExpensesService : IExpensesService
+    {
+        private readonly ApplicationDbContext dbContext;
+        private readonly IExpensesMapper expensesMapper;
+        private readonly IUserService userService;
+
+        public ExpensesService(ApplicationDbContext _dbContext,
+            IExpensesMapper _expensesMapper,
+            IUserService _userService)
+        {
+            dbContext = _dbContext;
+            expensesMapper = _expensesMapper;
+            userService = _userService;
+        }
+
+        public async Task<IEnumerable<ExpenseDto>> GetAllByUserId(int userId)
+        {
+            var userDto = await userService.GetUserEntity(userId);
+            List<ExpenseDto> expensesDto = new List<ExpenseDto>();
+            if (userDto != null)
+            {
+                var expenses = await dbContext.Expenses.Where(e => e.EX_User.U_Id == userId).ToListAsync();
+                foreach (var expense in expenses)
+                {
+                    var expenseDto = expensesMapper.ToExpenseDto(expense);
+                    expensesDto.Add(expenseDto);
+                }
+            }
+            return expensesDto;
+        }
+
+        public async Task<ExpenseDto> CreateNewLedgerEntry(ExpenseDto expenseDto)
+        {
+            var user = await dbContext.Users.Where(u => u.U_Id == expenseDto.User_Id).FirstOrDefaultAsync();
+            if (user != null)
+            {
+                var transactionCategory = await dbContext.TransactionCategories.Where(t => t.TC_Id == expenseDto.Category_Id).FirstOrDefaultAsync();
+                if (transactionCategory != null)
+                {
+                    var expense = new Expense()
+                    {
+                        EX_Amount = expenseDto.Amount,
+                        EX_DateTime = expenseDto.TransactionDate,
+                        EX_Note = expenseDto.Note,
+                        EX_User = user,
+                        EX_TransactionCategory = transactionCategory
+                    };
+                    dbContext.Add(expense);
+                    await dbContext.SaveChangesAsync();
+
+                    expenseDto.Id = expense.EX_Id;
+                }
+            }
+            return expenseDto;
+        }
+    }
+}

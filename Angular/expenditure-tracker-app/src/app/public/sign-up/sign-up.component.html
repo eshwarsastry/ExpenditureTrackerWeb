@@ -1,0 +1,46 @@
+<mat-toolbar>
+  <mat-toolbar-row>
+    <button mat-button color="secondary" (click)="navToLogin()">Login</button>
+  </mat-toolbar-row>
+</mat-toolbar>
+<mat-grid-list cols="2" rowHeight="1:1">
+  <mat-grid-tile>
+    <mat-card class="signup-card">
+      <h2 class="signup-title">Sign up</h2>
+      <form [formGroup]="signupForm" (ngSubmit)="onRegister()">
+        <div class="row">
+          <mat-form-field appearance="fill">
+            <mat-label>First name</mat-label>
+            <input matInput placeholder="Enter your First Name" formControlName="firstname" />
+          </mat-form-field>
+        </div>
+        <div class="row">
+          <mat-form-field appearance="fill">
+            <mat-label>Surname</mat-label>
+            <input matInput placeholder="Enter your Surname" formControlName="lastname" />
+          </mat-form-field>
+        </div>
+        <div class="row">
+          <mat-form-field appearance="fill">
+            <mat-label>Email</mat-label>
+            <input matInput placeholder="Enter your email" formControlName="email" type="email" />
+          </mat-form-field>
+        </div>
+        <div class="row">
+          <mat-form-field appearance="fill">
+            <mat-label>Password</mat-label>
+            <input matInput placeholder="Enter your password" formControlName="password" type="password" />
+          </mat-form-field>
+        </div>
+        <div class="row">
+          <button mat-raised-button color="primary" type="submit">Register</button>
+        </div>
+      </form>
+    </mat-card>
+  </mat-grid-tile>
+  <mat-grid-tile>
+    <div class="illustration">
+      <img class="img-signup" src="undraw_signup.png" alt="signup Image" />
+    </div>
+  </mat-grid-tile>
+</mat-grid-list>

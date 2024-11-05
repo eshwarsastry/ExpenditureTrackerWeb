@@ -1,0 +1,35 @@
+<mat-toolbar>
+  <mat-toolbar-row>
+    <button mat-button color="primary" (click)="navToRegister()">Sign up</button>
+    <div class="flex-spacer"></div>
+  </mat-toolbar-row>
+</mat-toolbar>
+<mat-grid-list cols="2" rowHeight="1:1">
+  <mat-grid-tile>
+    <mat-card class="login-card">
+      <h2 class="login-title">Login</h2>
+      <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+        <div class="row">
+          <mat-form-field appearance="fill">
+            <mat-label>Email</mat-label>
+            <input matInput placeholder="Enter your email" formControlName="email" type="email" />
+          </mat-form-field>
+        </div>
+        <div class="row">
+          <mat-form-field appearance="fill">
+            <mat-label>Password</mat-label>
+            <input matInput placeholder="Enter your password" formControlName="password" type="password" />
+          </mat-form-field>
+        </div>
+        <div class="row">
+          <button mat-raised-button color="primary" type="submit">Login</button>
+        </div>
+      </form>
+    </mat-card>
+  </mat-grid-tile>
+  <mat-grid-tile>
+    <div class="illustration">
+      <img class="img-welcome" src="undraw_Welcoming.png" alt="welcome Image" />
+    </div>
+  </mat-grid-tile>
+</mat-grid-list>
