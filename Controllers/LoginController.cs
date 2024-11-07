@@ -1,11 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ExpenditureTrackerWeb.Shared.Models;
 using ExpenditureTrackerWeb.Shared.Dto;
 using ExpenditureTrackerWeb.Shared.Services;
-using Microsoft.AspNetCore.Cors;
 using ExpenditureTrackerWeb.Shared.ResponseModels;
-using NuGet.Protocol.Plugins;
 using ExpenditureTrackerWeb.Shared.Enums;
+using ExpenditureTrackerWeb.Shared.Entities;
 
 namespace ExpenditureTrackerWeb.Controllers
 {

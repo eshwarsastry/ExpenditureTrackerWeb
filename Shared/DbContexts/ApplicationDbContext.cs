@@ -1,5 +1,4 @@
 ﻿using ExpenditureTrackerWeb.Shared.Entities;
-using ExpenditureTrackerWeb.Shared.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace ExpenditureTrackerWeb.Shared.DbContexts

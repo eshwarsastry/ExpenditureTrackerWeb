@@ -1,7 +1,7 @@
 ﻿using ExpenditureTrackerWeb.Shared.DbContexts;
 using ExpenditureTrackerWeb.Shared.Dto;
+using ExpenditureTrackerWeb.Shared.Entities;
 using ExpenditureTrackerWeb.Shared.Mappers;
-using ExpenditureTrackerWeb.Shared.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace ExpenditureTrackerWeb.Shared.Services
@@ -51,7 +51,7 @@ namespace ExpenditureTrackerWeb.Shared.Services
         public async Task<int> GetUserIdByUserEmailEntity(UserDto userDto)
         {
             var user = await dbContext.Users.Where(u => u.U_Email == userDto.Email).FirstOrDefaultAsync();
-            return userDto.Id;
+            return user.U_Id;
         }
 
         public async Task<Boolean> UserExists(UserDto userDto)

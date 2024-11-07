@@ -15,10 +15,10 @@ namespace ExpenditureTrackerWeb.Shared.Mappers
             return new CategoryDto()
             {
                 Id = transactionCategory.TC_Id,
-                User_Id = transactionCategory.TC_User.U_Id,
+                User_Id = transactionCategory.TC_UserU_Id,
                 Name= transactionCategory.TC_Name,
                 Description = transactionCategory.TC_Description,
-                TransactionType_Id = transactionCategory.TC_TransactionType.TT_Id
+                TransactionType_Id = transactionCategory.TC_TransactionTypeTT_Id
             };
 
         }

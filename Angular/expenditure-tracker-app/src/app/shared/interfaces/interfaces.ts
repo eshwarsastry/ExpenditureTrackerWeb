@@ -54,7 +54,7 @@ export interface RegisterResponse {
 Interface for the Transaction Categories (can look different, based on your backend api)
 */
 export interface TransactionCategory {
-  id: number;
+  id?: number;
   user_Id: number;
   transactionType_Id: number;
   name: string;
@@ -71,5 +71,13 @@ export interface Transactions {
   amount: number;
   transactionDate: Date;
   note: string;
+}
+
+/*
+Interface for the Transaction Type (can look different, based on your backend api)
+*/
+export interface TransactionType {
+  id: number;
+  transactionType: string;
 }
 

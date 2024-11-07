@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { TransactionCategory } from '../../shared/interfaces/interfaces';
 import { Router } from '@angular/router';
 import { SharedService } from '../../shared/services/shared.service';
+import { TransactionCategoryService } from '../../shared/services/transaction-category.service';
 
 @Component({
   selector: 'app-category-detail',
@@ -13,28 +14,33 @@ import { SharedService } from '../../shared/services/shared.service';
 export class CategoryDetailComponent implements OnInit {
   constructor(private router: Router,
     private dialog: MatDialog,
-    private sharedService: SharedService) { }
+    private sharedService: SharedService,
+    private transactionCategoryService: TransactionCategoryService) { }
 
   displayedColumns: string[] = ['name', 'description'];
-  sharedData: any;
+  loggedInUserData: any;
   resultsLength = 0;
   isLoadingResults = true;
   isRateLimitReached = false;
-  data: TransactionCategory[] = [];
+  categoryTableData: TransactionCategory[] = [];
 
   ngOnInit() {
     this.sharedService.data$.subscribe((data) => {
-      this.sharedData = data; // Receive data whenever it’s updated
+      this.loggedInUserData = data;
+      this.transactionCategoryService.getAllTransactionCategories(this.loggedInUserData.userId).subscribe((response) => {
+        this.categoryTableData = response;
+      });
     });
+    
   }
 
   openAddTransactionCategoryDialog() {
     const dialogRef = this.dialog.open(AddTransactionCategoryFormComponent, {
-      width: '400px',  // Optional: set width of the dialog
-      data: {}         // Optional: pass data to dialog if needed
+      width: '400px',  
+      data: this.loggedInUserData         
     });
 
-    // Handle dialog close (optional)
+    
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         // Logic after the dialog is closed, if needed

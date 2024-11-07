@@ -1,5 +1,4 @@
-﻿using ExpenditureTrackerWeb.Shared.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ExpenditureTrackerWeb.Shared.Entities
@@ -14,7 +13,11 @@ namespace ExpenditureTrackerWeb.Shared.Entities
         public string TC_Description { get; set; } = "";
         
         public ICollection<Expense>? TC_Expenses { get; set; }
+
+        public int TC_UserU_Id { get; set; } //Foreign Key property.
         public User TC_User { get; set; }
+
+        public int TC_TransactionTypeTT_Id { get; set; } //Foreign Key property.
         public TransactionType TC_TransactionType { get; set; }
     }
 }

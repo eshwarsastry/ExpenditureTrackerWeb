@@ -1,5 +1,4 @@
-﻿using ExpenditureTrackerWeb.Shared.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ExpenditureTrackerWeb.Shared.Entities
@@ -14,8 +13,11 @@ namespace ExpenditureTrackerWeb.Shared.Entities
         public DateTime EX_DateTime { get; set; }
         [Column(TypeName = "nvarchar(150)")]
         public string EX_Note { get; set; } = "";
-
+        
+        public int EX_UserU_Id { get; set; } //Foreign Key property.
         public User EX_User { get; set; }
+
+        public int EX_TransactionCategoryTC_Id { get; set; } //Foreign Key property.
         public TransactionCategory EX_TransactionCategory { get; set; }
     }
 }

@@ -55,6 +55,7 @@ namespace ExpenditureTrackerWeb.Shared.Services
                     var category = new TransactionCategory()
                     {
                         TC_Name = categoryDto.Name,
+                        TC_Description = categoryDto.Description,
                         TC_TransactionType = transactionType,
                         TC_User = user
                     };

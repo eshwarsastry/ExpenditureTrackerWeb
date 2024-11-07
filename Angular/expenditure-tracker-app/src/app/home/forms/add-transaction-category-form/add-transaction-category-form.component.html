@@ -4,21 +4,24 @@
     <mat-form-field appearance="fill">
       <mat-label>Transaction Type</mat-label>
       <mat-select formControlName="transactionType">
-        <mat-option *ngFor="let type of transactionTypes" [value]="type">
-          {{ type }}
+        <mat-option *ngFor="let type of transactionTypes" [value]="type.id">
+          {{ type.transactionType }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="transactionCategoryForm.get('transactionType')?.hasError('required')">
         Transaction type is required
       </mat-error>
     </mat-form-field>
-
     <mat-form-field appearance="fill">
       <mat-label>Category Name</mat-label>
       <input matInput formControlName="categoryName" placeholder="Enter category name" />
       <mat-error *ngIf="transactionCategoryForm.get('categoryName')?.hasError('required')">
         Category name is required
       </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Category Description</mat-label>
+      <input matInput formControlName="categoryDescription" placeholder="Enter description of the category" />
     </mat-form-field>
   </mat-dialog-content>
   <mat-dialog-actions align="end">

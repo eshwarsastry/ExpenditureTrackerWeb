@@ -1,6 +1,5 @@
 ﻿using ExpenditureTrackerWeb.Shared.Dto;
 using ExpenditureTrackerWeb.Shared.Entities;
-using ExpenditureTrackerWeb.Shared.Models;
 
 namespace ExpenditureTrackerWeb.Shared.Mappers
 {

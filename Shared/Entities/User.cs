@@ -1,8 +1,7 @@
-﻿using ExpenditureTrackerWeb.Shared.Entities;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ExpenditureTrackerWeb.Shared.Models
+namespace ExpenditureTrackerWeb.Shared.Entities
 {
     public class User
     {
