@@ -1,3 +1,4 @@
+import { User } from "./user";
 
 /*
 Interface for the Refresh Token (can look different, based on your backend api)
@@ -54,7 +55,7 @@ export interface RegisterResponse {
 Interface for the Transaction Categories (can look different, based on your backend api)
 */
 export interface TransactionCategory {
-  id?: number;
+  id: number;
   user_Id: number;
   transactionType_Id: number;
   name: string;
@@ -79,5 +80,11 @@ Interface for the Transaction Type (can look different, based on your backend ap
 export interface TransactionType {
   id: number;
   transactionType: string;
+}
+
+export interface CategoryDialogData {
+  transactionCategoryRow: TransactionCategory;  // The transaction category row object
+  loggedInUserData: User;                // A login user object
+  editable: boolean;         // A boolean flag to indicate if editing is allowed
 }
 

@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AddTransactionCategoryFormComponent } from '../forms/add-transaction-category-form/add-transaction-category-form.component';
 import { AddTransactionExpenseFormComponent } from '../forms/add-transaction-expense-form/add-transaction-expense-form.component';
 import { SharedService } from '../../shared/services/shared.service';
+import { LoginResponse } from '../../shared/interfaces/interfaces';
 
 @Component({
   selector: 'app-expense-dashboard',

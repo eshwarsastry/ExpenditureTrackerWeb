@@ -27,4 +27,10 @@ export class TransactionCategoryService {
 
     return this.http.post<TransactionCategory>(url, category);
   }
+
+  deleteCategory(categoryId: number): Observable<void> {
+    const url = `${this.apiUrl}/ExpenditureLedger/DeleteCategory?categoryId=${categoryId}`;
+
+    return this.http.delete<void>(url);
+  }
 }

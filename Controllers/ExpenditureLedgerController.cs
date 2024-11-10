@@ -24,6 +24,7 @@ namespace ExpenditureTrackerWeb.Controllers
             transactionCategoryService = _transactionCategoryService;
             transactionTypeService = _transactionTypeService;
         }
+
         // GET: api/ExpenditureLedger/GetAllTransactionTypes
         [HttpGet("GetAllTransactionTypes")]
         public async Task<IEnumerable<TransactionTypeDto>> GetAllTransactionTypes()
@@ -39,20 +40,20 @@ namespace ExpenditureTrackerWeb.Controllers
             var result = await expensesService.GetAllByUserId(userId);
             return result;
         }
-
-        //GET: api/ExpenditureLedger/GetAllCategoriesOfUser
-        [HttpGet("GetAllCategoriesOfUser")]
-        public async Task<IEnumerable<CategoryDto>> GetAllCategoriesOfUser(int userId)
-        {
-            var result = await transactionCategoryService.GetAllByUserId(userId);
-            return result;
-        }
-
+       
         //POST: api/ExpenditureLedger/AddLedgerEntry
         [HttpPost("AddLedgerEntry")]
         public async Task<ExpenseDto> AddLedgerEntry([FromBody] ExpenseDto expenseDto)
         {
             var result = await expensesService.CreateNewLedgerEntry(expenseDto);
+            return result;
+        }
+        
+        //GET: api/ExpenditureLedger/GetAllCategoriesOfUser
+        [HttpGet("GetAllCategoriesOfUser")]
+        public async Task<IEnumerable<CategoryDto>> GetAllCategoriesOfUser(int userId)
+        {
+            var result = await transactionCategoryService.GetAllByUserId(userId);
             return result;
         }
 
@@ -64,5 +65,11 @@ namespace ExpenditureTrackerWeb.Controllers
             return result;
         }
 
+        //Delete: api/ExpenditureLedger/DeleteCategory
+        [HttpDelete("DeleteCategory")]
+        public async Task DeleteCategory(int categoryId)
+        {
+            await transactionCategoryService.RemoveCategory(categoryId);
+        }
     }
 }

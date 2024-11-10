@@ -10,6 +10,8 @@ namespace ExpenditureTrackerWeb.Shared.Services
     {
         public Task<IEnumerable<CategoryDto>> GetAllByUserId(int userId);
         public Task<CategoryDto> AddNewCategory(CategoryDto categoryDto);
+        public Task RemoveCategory(int categoryId);
+
     }
 
     public class TransactionCategoryService : ITransactionCategoryService
@@ -52,22 +54,49 @@ namespace ExpenditureTrackerWeb.Shared.Services
                 var transactionType = await dbContext.TransactionTypes.Where(t => t.TT_Id == categoryDto.TransactionType_Id).FirstOrDefaultAsync();
                 if (transactionType != null)
                 {
-                    var category = new TransactionCategory()
+                    if (categoryDto.Id != 0)
                     {
-                        TC_Name = categoryDto.Name,
-                        TC_Description = categoryDto.Description,
-                        TC_TransactionType = transactionType,
-                        TC_User = user
-                    };
-                    dbContext.Add(category);
-                    await dbContext.SaveChangesAsync();
+                        var existingCategory = await dbContext.TransactionCategories.Where(c => c.TC_Id == categoryDto.Id).FirstOrDefaultAsync();
+                        if (existingCategory != null) 
+                        {
+                            existingCategory.TC_Name = categoryDto.Name;
+                            existingCategory.TC_Description = categoryDto.Description;
+                            existingCategory.TC_TransactionType = transactionType;
+                            existingCategory.TC_User = user;
+                        }
+                        dbContext.Update(existingCategory);
+                        await dbContext.SaveChangesAsync();
+                    }
+                    else
+                    {
 
-                    categoryDto.Id = category.TC_Id;
+                        var category = new TransactionCategory()
+                        {
+                            TC_Name = categoryDto.Name,
+                            TC_Description = categoryDto.Description,
+                            TC_TransactionType = transactionType,
+                            TC_User = user
+                        };
+                        dbContext.Add(category);
+                        await dbContext.SaveChangesAsync();
+                        categoryDto.Id = category.TC_Id;
+                    }
                 }
 
             }
             return categoryDto;
         }
+
+        public async Task RemoveCategory(int categoryId)
+        {
+            var existingCategory = await dbContext.TransactionCategories.FindAsync(categoryId);
+            if (existingCategory != null)
+            {
+                dbContext.TransactionCategories.Remove(existingCategory);
+                await dbContext.SaveChangesAsync();
+            }
+        }
+
     }
 }
 
