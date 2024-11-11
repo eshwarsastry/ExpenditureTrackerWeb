@@ -43,15 +43,18 @@ namespace ExpenditureTrackerWeb.Controllers
                 {
                     loginResponse.UserId = await userService.GetUserIdByUserEmailEntity(userDto);
                     loginResponse.ResponseCode = (int)ResponseEnums.Login_Success;
+                    loginResponse.Message = "Login was successfull";
                 }
                 else
                 {
                     loginResponse.ResponseCode = (int)ResponseEnums.Username_Password_Mismatch;
+                    loginResponse.Message = "Username and password were incorrect.";
                 }
             }
             else
             {
                 loginResponse.ResponseCode = (int)ResponseEnums.Username_Not_Found;
+                loginResponse.Message = "Unknown user. Please sign-up";
             }
 
             return loginResponse;
@@ -69,10 +72,12 @@ namespace ExpenditureTrackerWeb.Controllers
             {
                 userDto = await userService.CreateUserAsync(userDto);
                 registerResponse.ResponseCode = (int)ResponseEnums.User_Created;
+                registerResponse.Message = "User sign-up successful. Please login";
             }
             else
             {
                 registerResponse.ResponseCode = (int)ResponseEnums.User_Already_Exists;
+                registerResponse.Message = "User credentials already exist.";
             }
             return registerResponse;
         }

@@ -39,7 +39,7 @@ export class SignUpComponent {
         this.router.navigate(['../public/login']);
       }
       else {
-        this.snackbar.open('User created successfully', 'Close', {
+        this.snackbar.open(response.message, 'Close', {
           duration: 2000, horizontalPosition: 'right', verticalPosition: 'bottom'
         });
       }

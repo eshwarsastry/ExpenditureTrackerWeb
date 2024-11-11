@@ -44,8 +44,8 @@ export class LoginComponent {
         this.router.navigate(['../home/dashboard']);
       }
       else {
-        this.snackbar.open('Login not Successfull', 'Close', {
-          duration: 2000, horizontalPosition: 'right', verticalPosition: 'bottom'
+        this.snackbar.open(response.message, 'Close', {
+          duration: 3000, horizontalPosition: 'right', verticalPosition: 'bottom'
         });
       }
     });

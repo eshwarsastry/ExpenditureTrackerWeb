@@ -39,7 +39,8 @@ export class AuthenticateService {
   private apiUrl = environment.apiUrl;
 
   constructor(
-    private http: HttpClient) { }
+    private http: HttpClient,
+    private jwtService: JwtHelperService) { }
 
   login(loginRequest: User): Observable<LoginResponse> {
     const url = `${this.apiUrl}/Login/LoginUser`;
@@ -53,11 +54,11 @@ export class AuthenticateService {
     return this.http.post<RegisterResponse>(url, registerRequest);
   }
 
-  /*
-   Get the user from the token payload
-   */
-  //getLoggedInUser() {
-  //  const decodedToken = this.jwtService.decodeToken();
-  //  return decodedToken.user;
-  //}
+  
+   //Get the user from the token payload
+   
+  getLoggedInUser() {
+    const decodedToken = this.jwtService.decodeToken();
+    return decodedToken.user;
+  }
 }
