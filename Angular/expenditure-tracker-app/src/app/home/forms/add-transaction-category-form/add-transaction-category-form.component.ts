@@ -36,6 +36,18 @@ export class AddTransactionCategoryFormComponent implements OnInit {
     this.transactionTypeService.getAllTransactionTypes().subscribe((response) => {
       this.transactionTypes = response;
     });
+    if (this.dailogData.editable) {
+      this.setFormValues();
+    }
+  }
+
+  setFormValues() {
+    this.transactionCategoryForm.patchValue({
+      id: this.dailogData.transactionCategoryRow.id ?? 0,
+      transactionType: this.dailogData.transactionCategoryRow.transactionType_Id,
+      categoryName: this.dailogData.transactionCategoryRow.name,
+      categoryDescription: this.dailogData.transactionCategoryRow.description
+    })
   }
 
   onSave() {
@@ -44,6 +56,7 @@ export class AddTransactionCategoryFormComponent implements OnInit {
         id: this.dailogData.transactionCategoryRow.id ?? 0,
         user_Id: this.dailogData.loggedInUserData.userId,
         transactionType_Id: this.transactionCategoryForm.get('transactionType')?.value,
+        transactionType_Name: '',
         name: this.transactionCategoryForm.get('categoryName')?.value,
         description: this.transactionCategoryForm.get('categoryDescription')?.value
       };

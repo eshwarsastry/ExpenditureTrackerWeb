@@ -48,7 +48,14 @@ namespace ExpenditureTrackerWeb.Controllers
             var result = await expensesService.CreateNewLedgerEntry(expenseDto);
             return result;
         }
-        
+
+        //Delete: api/ExpenditureLedger/DeleteTransaction
+        [HttpDelete("DeleteTransaction")]
+        public async Task DeleteTransaction(int transactionId)
+        {
+            await expensesService.RemoveTransaction(transactionId);
+        }
+
         //GET: api/ExpenditureLedger/GetAllCategoriesOfUser
         [HttpGet("GetAllCategoriesOfUser")]
         public async Task<IEnumerable<CategoryDto>> GetAllCategoriesOfUser(int userId)

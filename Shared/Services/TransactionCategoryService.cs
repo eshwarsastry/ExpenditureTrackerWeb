@@ -36,7 +36,9 @@ namespace ExpenditureTrackerWeb.Shared.Services
 
             if (userDto != null)
             {
-                var transactionCategories = await dbContext.TransactionCategories.Where(e => e.TC_User.U_Id == userId).ToListAsync();
+                var transactionCategories = await dbContext.TransactionCategories
+                    .Include(t => t.TC_TransactionType)  
+                    .Where(e => e.TC_User.U_Id == userId).ToListAsync();
                 foreach (var category in transactionCategories)
                 {
                     var expenseDto = categoriesMapper.ToCategoryDto(category);

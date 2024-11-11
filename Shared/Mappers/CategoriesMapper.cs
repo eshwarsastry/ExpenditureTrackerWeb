@@ -18,7 +18,8 @@ namespace ExpenditureTrackerWeb.Shared.Mappers
                 User_Id = transactionCategory.TC_UserU_Id,
                 Name= transactionCategory.TC_Name,
                 Description = transactionCategory.TC_Description,
-                TransactionType_Id = transactionCategory.TC_TransactionTypeTT_Id
+                TransactionType_Id = transactionCategory.TC_TransactionTypeTT_Id,
+                TransactionType_Name = transactionCategory.TC_TransactionType?.TT_Name
             };
 
         }

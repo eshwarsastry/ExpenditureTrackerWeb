@@ -28,7 +28,7 @@
     <!-- Type Column -->
     <ng-container matColumnDef="transactionType">
       <th mat-header-cell *matHeaderCellDef>Transaction type</th>
-      <td mat-cell *matCellDef="let row">{{ getTypeDisplayValue(row.transactionType_Id) }}</td>
+      <td mat-cell *matCellDef="let row">{{ row.transactionType_Name }}</td>
 
     </ng-container>
     <!-- Edit Column -->

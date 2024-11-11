@@ -3,7 +3,7 @@
   <mat-dialog-content>
     <mat-form-field appearance="fill">
       <mat-label>Transaction Type</mat-label>
-      <mat-select formControlName="transactionType" [(ngModel)]="dailogData.transactionCategoryRow.transactionType_Id">
+      <mat-select formControlName="transactionType">
         <mat-option *ngFor="let type of transactionTypes" [value]="type.id">
           {{ type.transactionType }}
         </mat-option>
@@ -14,14 +14,14 @@
     </mat-form-field>
     <mat-form-field appearance="fill">
       <mat-label>Category Name</mat-label>
-      <input matInput formControlName="categoryName" placeholder="Enter category name" [(ngModel)]="dailogData.transactionCategoryRow.name"/>
+      <input matInput formControlName="categoryName" placeholder="Enter category name"/>
       <mat-error *ngIf="transactionCategoryForm.get('categoryName')?.hasError('required')">
         Category name is required
       </mat-error>
     </mat-form-field>
     <mat-form-field appearance="fill">
       <mat-label>Category Description</mat-label>
-      <input matInput formControlName="categoryDescription" placeholder="Enter description of the category" [(ngModel)]="dailogData.transactionCategoryRow.description"/>
+      <input matInput formControlName="categoryDescription" placeholder="Enter description of the category"/>
     </mat-form-field>
   </mat-dialog-content>
   <mat-dialog-actions align="end">

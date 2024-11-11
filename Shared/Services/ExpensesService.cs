@@ -10,7 +10,7 @@ namespace ExpenditureTrackerWeb.Shared.Services
     {
         public Task<IEnumerable<ExpenseDto>> GetAllByUserId(int userId);
         public Task<ExpenseDto> CreateNewLedgerEntry(ExpenseDto expenseDto);
-
+        public Task RemoveTransaction(int transactionId);
     }
     public class ExpensesService : IExpensesService
     {
@@ -33,7 +33,10 @@ namespace ExpenditureTrackerWeb.Shared.Services
             List<ExpenseDto> expensesDto = new List<ExpenseDto>();
             if (userDto != null)
             {
-                var expenses = await dbContext.Expenses.Where(e => e.EX_User.U_Id == userId).ToListAsync();
+                var expenses = await dbContext.Expenses
+                    .Include(tc => tc.EX_TransactionCategory)
+                    .Include(t => t.EX_TransactionCategory.TC_TransactionType)  
+                    .Where(e => e.EX_User.U_Id == userId).ToListAsync();
                 foreach (var expense in expenses)
                 {
                     var expenseDto = expensesMapper.ToExpenseDto(expense);
@@ -51,21 +54,49 @@ namespace ExpenditureTrackerWeb.Shared.Services
                 var transactionCategory = await dbContext.TransactionCategories.Where(t => t.TC_Id == expenseDto.Category_Id).FirstOrDefaultAsync();
                 if (transactionCategory != null)
                 {
-                    var expense = new Expense()
+                    if (expenseDto.Id != 0)
                     {
-                        EX_Amount = expenseDto.Amount,
-                        EX_DateTime = expenseDto.TransactionDate,
-                        EX_Note = expenseDto.Note,
-                        EX_User = user,
-                        EX_TransactionCategory = transactionCategory
-                    };
-                    dbContext.Add(expense);
-                    await dbContext.SaveChangesAsync();
+                        var existingExpense = await dbContext.Expenses.FindAsync(expenseDto.Id);
+                        if (existingExpense != null)
+                        {
+                            existingExpense.EX_Amount = expenseDto.Amount;
+                            existingExpense.EX_DateTime = expenseDto.TransactionDate;
+                            existingExpense.EX_Note = expenseDto.Note;
+                            existingExpense.EX_User = user;
+                            existingExpense.EX_TransactionCategory = transactionCategory;
+                            dbContext.Update(existingExpense);
+                            await dbContext.SaveChangesAsync();
+                        }  
+                    }
+                    else
+                    {
+                        var expense = new Expense()
+                        {
+                            EX_Amount = expenseDto.Amount,
+                            EX_DateTime = expenseDto.TransactionDate,
+                            EX_Note = expenseDto.Note,
+                            EX_User = user,
+                            EX_TransactionCategory = transactionCategory
+                        };
+                        dbContext.Add(expense);
+                        await dbContext.SaveChangesAsync();
 
-                    expenseDto.Id = expense.EX_Id;
+                        expenseDto.Id = expense.EX_Id;
+                        
+                    }
                 }
             }
             return expenseDto;
+        }
+
+        public async Task RemoveTransaction(int transactionId)
+        {
+            var existingTransaction = await dbContext.Expenses.FindAsync(transactionId);
+            if (existingTransaction != null)
+            {
+                dbContext.Expenses.Remove(existingTransaction);
+                await dbContext.SaveChangesAsync();
+            }
         }
     }
 }

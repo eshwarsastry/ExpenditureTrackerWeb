@@ -58,6 +58,7 @@ export interface TransactionCategory {
   id: number;
   user_Id: number;
   transactionType_Id: number;
+  transactionType_Name: string;
   name: string;
   description: string;
 }
@@ -69,6 +70,9 @@ export interface Transactions {
   id: number;
   user_Id: number;
   category_Id: number;
+  category_Name: string;
+  transactionType_Id: number;
+  transactionType_Name: string;
   amount: number;
   transactionDate: Date;
   note: string;
@@ -87,4 +91,11 @@ export interface CategoryDialogData {
   loggedInUserData: User;                // A login user object
   editable: boolean;         // A boolean flag to indicate if editing is allowed
 }
+
+export interface ExpenseDialogData {
+  transactionRow: Transactions;  // The transaction row object
+  loggedInUserData: User;                // A login user object
+  editable: boolean;         // A boolean flag to indicate if editing is allowed
+}
+
 

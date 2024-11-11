@@ -26,6 +26,7 @@ export class CategoryDetailComponent implements OnInit {
   transactionCategoryRow: TransactionCategory = {
     id : 0,
     transactionType_Id: 0,
+    transactionType_Name: '',
     user_Id: 0,
     name: '',
     description:''
@@ -38,13 +39,6 @@ export class CategoryDetailComponent implements OnInit {
   categories: TransactionCategory[] = []
   categoryTableData = new MatTableDataSource(this.categories);
 
-
-  // Define a mapping for transaction type to display value
-  typeDisplayMap: { [key: number]: string } = {
-    1: 'Income',
-    2: 'Expense'
-  };
-
   ngOnInit() {
     this.sharedService.data$.subscribe((data) => {
       this.loggedInUserData = data;
@@ -52,10 +46,6 @@ export class CategoryDetailComponent implements OnInit {
         this.categoryTableData.data = response;
       });
     });
-  }
-
-  getTypeDisplayValue(type: number): string {
-    return this.typeDisplayMap[type] || ''; // Default to the raw value if not found
   }
 
   addTransactionCategory() {
