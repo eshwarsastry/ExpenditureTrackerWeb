@@ -25,34 +25,39 @@ export class ExpenseDetailComponent implements OnInit {
   transactions: Transactions[] = [];
   transactionTableData = new MatTableDataSource(this.transactions);
 
-  transactionRow: Transactions = {
-    id: 0,
-    transactionDate: new Date(),
-    user_Id: 0,
-    category_Id: 0,
-    category_Name: '',
-    transactionType_Id: 0,
-    transactionType_Name: '',
-    amount: 0,
-    note: ''
-  }; //Fields to be passed to the dialog form. Pass a defualt value at times.
-  loggedInUserData: any; //Fetch login user data to be used for identification in backend APIs.
+  transactionRow: Transactions = this.initializeTransactions();
+
+  loggedInUserId: number = 0; //Fetch login user data to be used for identification in backend APIs.
 
   editable = false;
 
   ngOnInit(): void {
-    this.sharedService.data$.subscribe((data) => {
-      this.loggedInUserData = data;
-      this.transactionExpenseService.getAllTransactions(this.loggedInUserData.userId).subscribe((response) => {
+    this.sharedService.userIdSubject.subscribe((data) => {
+      this.loggedInUserId = data;
+      this.transactionExpenseService.getAllTransactions(this.loggedInUserId).subscribe((response) => {
         this.transactionTableData.data = response;
       });
     });
   }
 
+  initializeTransactions(): Transactions {
+    return {
+      id: 0,
+      transactionDate: new Date(),
+      user_Id: 0,
+      category_Id: 0,
+      category_Name: '',
+      transactionType_Id: 0,
+      transactionType_Name: '',
+      amount: 0,
+      note: ''
+    }; //Fields to be passed to the dialog form. Pass a defualt value at times.
+  }
+
   addTransactionExpense() {
     const dialogData: ExpenseDialogData = {
       transactionRow: this.transactionRow,
-      loggedInUserData: this.loggedInUserData,
+      loggedInUserId: this.loggedInUserId,
       editable: this.editable
     };
     const dialogRef = this.dialog.open(AddTransactionExpenseFormComponent, {
@@ -64,7 +69,8 @@ export class ExpenseDetailComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       // Logic after the dialog is closed, if needed
       this.transactionRow.id = 0; //reset value.
-      this.transactionExpenseService.getAllTransactions(this.loggedInUserData.userId).subscribe((response) => {
+      this.transactionRow = this.initializeTransactions();
+      this.transactionExpenseService.getAllTransactions(this.loggedInUserId).subscribe((response) => {
         this.transactionTableData.data = response;
       });
     });
@@ -78,7 +84,7 @@ export class ExpenseDetailComponent implements OnInit {
 
   removeTransaction(transactionId: number) {
     this.transactionExpenseService.deleteTransaction(transactionId).subscribe(() => {
-      this.transactionExpenseService.getAllTransactions(this.loggedInUserData.userId).subscribe((response) => {
+      this.transactionExpenseService.getAllTransactions(this.loggedInUserId).subscribe((response) => {
         this.transactionTableData.data = response;
       });
     });

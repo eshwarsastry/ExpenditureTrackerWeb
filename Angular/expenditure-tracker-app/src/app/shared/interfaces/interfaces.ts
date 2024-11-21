@@ -88,13 +88,13 @@ export interface TransactionType {
 
 export interface CategoryDialogData {
   transactionCategoryRow: TransactionCategory;  // The transaction category row object
-  loggedInUserData: User;                // A login user object
+  loggedInUserId: number;                // login user ID 
   editable: boolean;         // A boolean flag to indicate if editing is allowed
 }
 
 export interface ExpenseDialogData {
   transactionRow: Transactions;  // The transaction row object
-  loggedInUserData: User;                // A login user object
+  loggedInUserId: number;                // login user ID 
   editable: boolean;         // A boolean flag to indicate if editing is allowed
 }
 

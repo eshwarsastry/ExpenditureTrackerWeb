@@ -42,10 +42,10 @@ export class AddTransactionExpenseFormComponent {
     this.transactionTypeService.getAllTransactionTypes().subscribe((response) => {
       this.transactionTypes = response;
     });
-    this.transactionCategoryService.getAllTransactionCategories(this.dailogData.loggedInUserData.userId).subscribe((response) => {
+    this.transactionCategoryService.getAllTransactionCategories(this.dailogData.loggedInUserId).subscribe((response) => {
       this.transactionCategories = response;
       if (this.dailogData.editable) {
-        //this.updateTransactioncategories(this.dailogData.transactionRow.transactionType_Id);
+        this.updateTransactioncategories(this.dailogData.transactionRow.transactionType_Id);
         this.setFormValues();
       }
     });
@@ -82,7 +82,7 @@ export class AddTransactionExpenseFormComponent {
     if (this.transactionForm.valid) {
       const transaction: Transactions = {
         id: this.dailogData.transactionRow.id ?? 0,
-        user_Id: this.dailogData.loggedInUserData.userId,
+        user_Id: this.dailogData.loggedInUserId,
         category_Id: this.transactionForm.get('transactionCategory')?.value,
         category_Name: '',
         transactionType_Id: this.transactionForm.get('transactionType')?.value,

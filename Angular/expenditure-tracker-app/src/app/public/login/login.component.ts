@@ -38,8 +38,8 @@ export class LoginComponent {
     }
     this.authService.login(this.loginForm.value).subscribe((response) => {
       if (response.responseCode == 100) {
-        this.sharedService.sendData(response); // Send data via service
-
+        this.sharedService.sendData(response);
+        this.sharedService.setUserId(response.userId);
         // route to home/dashboard, if login was successfull
         this.router.navigate(['../home/dashboard']);
       }

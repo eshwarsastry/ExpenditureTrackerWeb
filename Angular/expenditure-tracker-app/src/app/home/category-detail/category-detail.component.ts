@@ -23,35 +23,38 @@ export class CategoryDetailComponent implements OnInit {
   }
 
   displayedColumns: string[] = ['id', 'name', 'description', 'transactionType','edit','delete'];
-  transactionCategoryRow: TransactionCategory = {
-    id : 0,
-    transactionType_Id: 0,
-    transactionType_Name: '',
-    user_Id: 0,
-    name: '',
-    description:''
-  }; //Fields to be passed to the dialog form. Pass a defualt value at times.
-  loggedInUserData: any; //Fetch login user data to be used for identification in backend APIs.
-  
+  loggedInUserId: number = 0; //Fetch login user data to be used for identification in backend APIs.
   editable = false;
 
   //Values used for the category table.
   categories: TransactionCategory[] = []
   categoryTableData = new MatTableDataSource(this.categories);
+  transactionCategoryRow: TransactionCategory = this.initializeTransactionCategory();
 
   ngOnInit() {
-    this.sharedService.data$.subscribe((data) => {
-      this.loggedInUserData = data;
-      this.transactionCategoryService.getAllTransactionCategories(this.loggedInUserData.userId).subscribe((response) => {
+    this.sharedService.userIdSubject.subscribe((data) => {
+      this.loggedInUserId = data;
+      this.transactionCategoryService.getAllTransactionCategories(this.loggedInUserId).subscribe((response) => {
         this.categoryTableData.data = response;
       });
     });
   }
 
+  initializeTransactionCategory(): TransactionCategory {
+    return {
+      id: 0,
+      transactionType_Id: 0,
+      transactionType_Name: '',
+      user_Id: 0,
+      name: '',
+      description: ''
+    }; //Fields to be passed to the dialog form. Pass a defualt value at times.
+  }
+
   addTransactionCategory() {
     const dialogData: CategoryDialogData = {
       transactionCategoryRow: this.transactionCategoryRow,
-      loggedInUserData: this.loggedInUserData,
+      loggedInUserId: this.loggedInUserId,
       editable: this.editable
     };
     const dialogRef = this.dialog.open(AddTransactionCategoryFormComponent, {
@@ -63,7 +66,8 @@ export class CategoryDetailComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       // Logic after the dialog is closed, if needed
       this.transactionCategoryRow.id = 0; //reset value.
-      this.transactionCategoryService.getAllTransactionCategories(this.loggedInUserData.userId).subscribe((response) => {
+      this.transactionCategoryRow = this.initializeTransactionCategory();
+      this.transactionCategoryService.getAllTransactionCategories(this.loggedInUserId).subscribe((response) => {
         this.categoryTableData.data = response;
       });
     });
@@ -77,7 +81,7 @@ export class CategoryDetailComponent implements OnInit {
 
   removeTransactionCategory(categoryId: number) {
     this.transactionCategoryService.deleteCategory(categoryId).subscribe(() => {
-      this.transactionCategoryService.getAllTransactionCategories(this.loggedInUserData.userId).subscribe((response) => {
+      this.transactionCategoryService.getAllTransactionCategories(this.loggedInUserId).subscribe((response) => {
         this.categoryTableData.data = response;
       });
     }); 

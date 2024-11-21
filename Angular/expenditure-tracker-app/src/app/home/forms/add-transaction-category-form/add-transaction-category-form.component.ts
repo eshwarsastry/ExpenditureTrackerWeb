@@ -54,7 +54,7 @@ export class AddTransactionCategoryFormComponent implements OnInit {
     if (this.transactionCategoryForm.valid) {
       const transactionCategory: TransactionCategory = {
         id: this.dailogData.transactionCategoryRow.id ?? 0,
-        user_Id: this.dailogData.loggedInUserData.userId,
+        user_Id: this.dailogData.loggedInUserId,
         transactionType_Id: this.transactionCategoryForm.get('transactionType')?.value,
         transactionType_Name: '',
         name: this.transactionCategoryForm.get('categoryName')?.value,
