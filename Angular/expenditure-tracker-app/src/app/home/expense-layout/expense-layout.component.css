@@ -2,3 +2,13 @@ mat-sidenav-container {
   height: calc(100% - 64px);
   margin: 0;
 }
+
+.mat-sidenav {
+  background-color: #ADD8E6 !important; /* Dark background */
+  color: white !important;
+}
+
+.mat-toolbar {
+  background-color: #87CEEB !important; /* Indigo color */
+  color: white !important;
+}

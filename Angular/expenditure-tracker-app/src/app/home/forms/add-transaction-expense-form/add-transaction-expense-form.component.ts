@@ -72,8 +72,6 @@ export class AddTransactionExpenseFormComponent {
   // Update categories based on selected transaction type
   updateTransactioncategories(typeId: number) {
     this.displayedtransactionCategories = this.transactionCategories.filter(subcat => subcat.transactionType_Id === typeId);
-    console.log(this.transactionCategories);
-    console.log(this.displayedtransactionCategories);
     // Clear category selection if type changes
     this.transactionForm.get('transactionCategory')?.setValue(null);
   }

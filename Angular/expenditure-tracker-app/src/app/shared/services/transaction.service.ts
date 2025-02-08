@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { Transactions } from '../interfaces/interfaces';
+import { TransactionTableFilter, Transactions } from '../interfaces/interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +18,15 @@ export class TransactionService {
     const url = `${this.apiUrl}/ExpenditureLedger/GetAllExpensesOfUser`;
     const params = new HttpParams().set('userId', userId.toString());
 
+    return this.http.get<Transactions[]>(url, { params });
+  }
+
+  getTransactionsByFilter(filterParams: TransactionTableFilter): Observable<Transactions[]> {
+    const url = `${this.apiUrl}/ExpenditureLedger/GetExpensesOfUserByFilter`;
+    const params = new HttpParams()
+      .set('user_Id', filterParams.user_Id)
+      .set('month', filterParams.month)
+      .set('year', filterParams.year);
     return this.http.get<Transactions[]>(url, { params });
   }
 

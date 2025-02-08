@@ -11,6 +11,8 @@ namespace ExpenditureTrackerWeb.Shared.Services
         public Task<IEnumerable<ExpenseDto>> GetAllByUserId(int userId);
         public Task<ExpenseDto> CreateNewLedgerEntry(ExpenseDto expenseDto);
         public Task RemoveTransaction(int transactionId);
+        public Task<IEnumerable<ExpenseDto>> GetAllByFilter(int userId, int month, int year);
+
     }
     public class ExpensesService : IExpensesService
     {
@@ -37,6 +39,25 @@ namespace ExpenditureTrackerWeb.Shared.Services
                     .Include(tc => tc.EX_TransactionCategory)
                     .Include(t => t.EX_TransactionCategory.TC_TransactionType)  
                     .Where(e => e.EX_User.U_Id == userId).ToListAsync();
+                foreach (var expense in expenses)
+                {
+                    var expenseDto = expensesMapper.ToExpenseDto(expense);
+                    expensesDto.Add(expenseDto);
+                }
+            }
+            return expensesDto;
+        }
+
+        public async Task<IEnumerable<ExpenseDto>> GetAllByFilter(int userId, int month, int year)
+        {
+            var userDto = await userService.GetUserEntity(userId);
+            List<ExpenseDto> expensesDto = new List<ExpenseDto>();
+            if (userDto != null)
+            {
+                var expenses = await dbContext.Expenses
+                    .Include(tc => tc.EX_TransactionCategory)
+                    .Include(t => t.EX_TransactionCategory.TC_TransactionType)
+                    .Where(e => e.EX_User.U_Id == userId && e.EX_DateTime.Month == month && e.EX_DateTime.Year == year).ToListAsync();
                 foreach (var expense in expenses)
                 {
                     var expenseDto = expensesMapper.ToExpenseDto(expense);

@@ -40,7 +40,15 @@ namespace ExpenditureTrackerWeb.Controllers
             var result = await expensesService.GetAllByUserId(userId);
             return result;
         }
-       
+
+        // GET: api/ExpenditureLedger/GetExpensesOfUserByFilter
+        [HttpGet("GetExpensesOfUserByFilter")]
+        public async Task<IEnumerable<ExpenseDto>> GetExpensesOfUserByFilter([FromQuery] TransactionsFilterDto filter)
+        {
+            var result = await expensesService.GetAllByFilter(filter.User_Id, filter.Month, filter.Year);
+            return result;
+        }
+
         //POST: api/ExpenditureLedger/AddLedgerEntry
         [HttpPost("AddLedgerEntry")]
         public async Task<ExpenseDto> AddLedgerEntry([FromBody] ExpenseDto expenseDto)

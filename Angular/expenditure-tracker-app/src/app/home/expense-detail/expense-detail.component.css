@@ -1,3 +1,7 @@
 .hidden-column {
   display: none;
 }
+
+mat-icon-button {
+    font-size: 20px;
+}

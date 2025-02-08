@@ -78,6 +78,12 @@ export interface Transactions {
   note: string;
 }
 
+export interface TransactionTableFilter {
+  user_Id: number;
+  month: number;
+  year: number;
+}
+
 /*
 Interface for the Transaction Type (can look different, based on your backend api)
 */
