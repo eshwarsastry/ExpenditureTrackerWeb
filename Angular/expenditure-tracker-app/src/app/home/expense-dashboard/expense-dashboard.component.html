@@ -1,44 +1,82 @@
-<div class="row">
-  <mat-grid-list cols="4">
-    <mat-grid-tile [rowspan]="1" [colspan]="1">
-      <mat-card class="prediction-card">
-        <mat-card-title>Prediction board</mat-card-title>
-        <mat-card-content>
-          View the future expense predictions based on the insights from your previous transactions.
-        </mat-card-content>
-        <mat-card-footer>
-        </mat-card-footer>
-      </mat-card>
-    </mat-grid-tile>
-    <mat-grid-tile [rowspan]="1" [colspan]="1">
-      <mat-card class="add-expense-card" (click)="openAddTransactionCategoryDialog()">
-        <mat-card-title>Add a new transaction category</mat-card-title>
-        <mat-card-content>
-          Add and store transactions categories.
-        </mat-card-content>
-        <mat-card-footer>
-        </mat-card-footer>
-      </mat-card>
-    </mat-grid-tile>
-    <mat-grid-tile [rowspan]="1" [colspan]="1">
-      <mat-card class="add-expense-card" >
-        <mat-card-title>Add a new transaction</mat-card-title>
-        <mat-card-content>
-          Add and store transactions.
-        </mat-card-content>
-        <mat-card-footer>
-        </mat-card-footer>
-      </mat-card>
-    </mat-grid-tile>
-    <mat-grid-tile [rowspan]="2" [colspan]="1">
-      <mat-card class="previous-expense-list">
-        <mat-card-title>Last transactions</mat-card-title>
-        <mat-card-content>
-          View previous transactions
-        </mat-card-content>
-        <mat-card-footer>
-        </mat-card-footer>
-      </mat-card>
-    </mat-grid-tile>
-  </mat-grid-list>
+<div class="content-background">
+  <div class="content-board">
+    <mat-grid-list cols="4" gutterSize="16px">
+      <mat-grid-tile [rowspan]="1" [colspan]="1">
+        <mat-card class="prediction-card">
+          <mat-card-title>
+          </mat-card-title>
+          <mat-card-content>
+            <div>
+              <div class="illustration">
+                <img src="undraw_predictive-analytics.png" alt="analysis Image" />
+              </div>
+              <h6>Expense analysis</h6>
+            </div>
+          </mat-card-content>
+          <mat-card-footer>
+          </mat-card-footer>
+        </mat-card>
+      </mat-grid-tile>
+      <mat-grid-tile [rowspan]="1" [colspan]="1">
+        <mat-card class="catgory-card" (click)="openAddTransactionCategoryDialog()">
+          <mat-card-title></mat-card-title>
+          <mat-card-content>
+            <div>
+              <div class="illustration">
+                <img src="undraw_logic.png" alt="catgeories Image" />
+              </div>
+              <h6>Transaction categories</h6>
+            </div>
+          </mat-card-content>
+          <mat-card-footer>
+          </mat-card-footer>
+        </mat-card>
+      </mat-grid-tile>
+      <mat-grid-tile [rowspan]="1" [colspan]="1">
+        <mat-card class="expense-card" (click)="openAddTransactionExpenseDialog()">
+          <mat-card-title></mat-card-title>
+          <mat-card-content>
+            <div>
+              <div class="illustration">
+                <img src="undraw_savings.png" alt="expenses Image" />
+              </div>
+              <h6>Expenses & Transactions</h6>
+            </div>
+          </mat-card-content>
+          <mat-card-footer>
+          </mat-card-footer>
+        </mat-card>
+      </mat-grid-tile>
+      <mat-grid-tile [rowspan]="2" [colspan]="1">
+        <mat-card class="recent-expense-list-card">
+          <mat-card-title>Previous transactions</mat-card-title>
+          <mat-card-content>
+            <div class="transactions-section">
+              <div *ngIf="isLoading">Loading transactions...</div>
+              <div *ngIf="!isLoading && recentTransactions.length === 0">No transactions available.</div>
+              <ul *ngIf="recentTransactions.length > 0">
+                <li *ngFor="let transaction of recentTransactions">
+                  {{ transaction.transactionDate | date:'dd/MM/yyyy' }} - {{ transaction.category_Name }} - ${{ transaction.amount }}
+                </li>
+              </ul>
+            </div>
+          </mat-card-content>
+          <mat-card-footer>
+            <button mat-icon-button matTooltip="View more" routerLink="../transactions-detail"><mat-icon>read_more</mat-icon></button>
+          </mat-card-footer>
+        </mat-card>
+      </mat-grid-tile>
+      <mat-grid-tile [rowspan]="1" [colspan]="3">
+        <mat-card class="under-construction-card">
+          <mat-card-title>Something works</mat-card-title>
+          <mat-card-content>
+            It works!
+          </mat-card-content>
+          <mat-card-footer>
+          </mat-card-footer>
+        </mat-card>
+      </mat-grid-tile>
+
+    </mat-grid-list>
+  </div>
 </div>

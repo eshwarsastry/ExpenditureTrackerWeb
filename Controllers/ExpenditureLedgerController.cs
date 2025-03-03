@@ -41,6 +41,14 @@ namespace ExpenditureTrackerWeb.Controllers
             return result;
         }
 
+        // GET: api/ExpenditureLedger/GetRecentExpensesOfUser
+        [HttpGet("GetRecentExpensesOfUser")]
+        public async Task<IEnumerable<ExpenseDto>> GetRecentExpensesOfUser(int userId)
+        {
+            var result = await expensesService.GetAllByUserId(userId);
+            return result.OrderByDescending(ex => ex.TransactionDate).Take(6);
+        }
+
         // GET: api/ExpenditureLedger/GetExpensesOfUserByFilter
         [HttpGet("GetExpensesOfUserByFilter")]
         public async Task<IEnumerable<ExpenseDto>> GetExpensesOfUserByFilter([FromQuery] TransactionsFilterDto filter)

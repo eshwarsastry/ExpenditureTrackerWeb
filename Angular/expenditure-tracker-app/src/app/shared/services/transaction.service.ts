@@ -21,6 +21,13 @@ export class TransactionService {
     return this.http.get<Transactions[]>(url, { params });
   }
 
+  getRecentTransactions(userId: number): Observable<Transactions[]> {
+    const url = `${this.apiUrl}/ExpenditureLedger/GetRecentExpensesOfUser`;
+    const params = new HttpParams().set('userId', userId.toString());
+
+    return this.http.get<Transactions[]>(url, { params });
+  }
+
   getTransactionsByFilter(filterParams: TransactionTableFilter): Observable<Transactions[]> {
     const url = `${this.apiUrl}/ExpenditureLedger/GetExpensesOfUserByFilter`;
     const params = new HttpParams()

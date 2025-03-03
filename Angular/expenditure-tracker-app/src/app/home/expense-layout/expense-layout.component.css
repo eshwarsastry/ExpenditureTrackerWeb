@@ -1,14 +1,37 @@
 mat-sidenav-container {
-  height: calc(100% - 64px);
+  height: 100%;
   margin: 0;
 }
 
 .mat-sidenav {
-  background-color: #ADD8E6 !important; /* Dark background */
-  color: white !important;
+  background-color: #296d8f; /* Dark blue for a modern look */
+  color: white;
 }
 
 .mat-toolbar {
-  background-color: #87CEEB !important; /* Indigo color */
-  color: white !important;
+  background-color: #073b54; /* Dark gray-blue */
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 20px;
+}
+
+.toolbar-title {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.toolbar-right {
+  display: flex;
+  align-items: center;
+}
+
+.toolbar-right mat-icon {
+    cursor: pointer;
+    margin-left: 15px;
+}
+
+.mat-icon {
+  margin-right: 10px;
+  font-size: 24px;
 }

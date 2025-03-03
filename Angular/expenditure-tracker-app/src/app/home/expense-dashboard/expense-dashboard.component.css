@@ -1,8 +1,43 @@
 mat-card {
   cursor: pointer;
   width: 100%;
-  height: 100%;
+  height: 80%;
   display: flex;
   flex-direction: column;
+  margin: 10px 10px 10px;
+  padding: 10px 5px 10px 15px;
 }
+
+mat-card-content {
+  display: flex;
+}
+
+.content-background {
+  background-color: #efeff5;
+  padding: 0px 20px 0px 20px;
+}
+
+.content-board {
+  margin: 0px 5px 0px 15px;
+  background-color: floralwhite;
+}
+
+.card-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.illustration {
+  width: 100px;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+  .illustration img {
+    width: 100%;
+    height: auto;
+  }
 
