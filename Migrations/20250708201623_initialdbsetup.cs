@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ExpenditureTrackerWeb.Migrations
 {
     /// <inheritdoc />
-    public partial class mssqlonprem_migration_919 : Migration
+    public partial class initialdbsetup : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -33,7 +33,7 @@ namespace ExpenditureTrackerWeb.Migrations
                     U_FirstName = table.Column<string>(type: "nvarchar(150)", nullable: false),
                     U_Name = table.Column<string>(type: "nvarchar(150)", nullable: false),
                     U_Email = table.Column<string>(type: "nvarchar(150)", nullable: false),
-                    U_Password = table.Column<string>(type: "byte", nullable: false)
+                    U_Password = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {

@@ -2,6 +2,16 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.9.
 
+## Setup
+1. Install node.js in the local system.
+2. Install Angular using the Node.js package setup in the system.
+3. Install the required angular packages for the project using the following command 
+ -- npm install
+   in the Expenditure Tracker App folder (root directory).
+4. Rectify the Angular jwt package error using the following command if required:
+-- npm install @auth0/angular-jwt
+
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.

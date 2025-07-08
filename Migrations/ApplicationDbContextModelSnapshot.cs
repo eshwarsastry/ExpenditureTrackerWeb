@@ -103,7 +103,7 @@ namespace ExpenditureTrackerWeb.Migrations
                     b.ToTable("TransactionTypes");
                 });
 
-            modelBuilder.Entity("ExpenditureTrackerWeb.Shared.Models.User", b =>
+            modelBuilder.Entity("ExpenditureTrackerWeb.Shared.Entities.User", b =>
                 {
                     b.Property<int>("U_Id")
                         .ValueGeneratedOnAdd()
@@ -140,7 +140,7 @@ namespace ExpenditureTrackerWeb.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ExpenditureTrackerWeb.Shared.Models.User", "EX_User")
+                    b.HasOne("ExpenditureTrackerWeb.Shared.Entities.User", "EX_User")
                         .WithMany("U_Expense")
                         .HasForeignKey("EX_UserU_Id")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -159,7 +159,7 @@ namespace ExpenditureTrackerWeb.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ExpenditureTrackerWeb.Shared.Models.User", "TC_User")
+                    b.HasOne("ExpenditureTrackerWeb.Shared.Entities.User", "TC_User")
                         .WithMany("U_TransactionCategories")
                         .HasForeignKey("TC_UserU_Id")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -180,7 +180,7 @@ namespace ExpenditureTrackerWeb.Migrations
                     b.Navigation("TT_TransactionCategories");
                 });
 
-            modelBuilder.Entity("ExpenditureTrackerWeb.Shared.Models.User", b =>
+            modelBuilder.Entity("ExpenditureTrackerWeb.Shared.Entities.User", b =>
                 {
                     b.Navigation("U_Expense");
 

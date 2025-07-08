@@ -1,4 +1,23 @@
-﻿IF OBJECT_ID(N'[__EFMigrationsHistory]') IS NULL
+﻿
+IF NOT EXISTS (
+    SELECT * FROM [TransactionTypes]
+    WHERE [TT_Name] = 'Income'
+)
+BEGIN
+    INSERT INTO [TransactionTypes] VALUES('Income');
+END;
+GO
+
+IF NOT EXISTS (
+    SELECT * FROM [TransactionTypes]
+    WHERE [TT_Name] = 'Expenditure'
+)
+BEGIN
+    INSERT INTO [TransactionTypes] VALUES('Expenditure');
+END;
+GO
+
+IF OBJECT_ID(N'[__EFMigrationsHistory]') IS NULL
 BEGIN
     CREATE TABLE [__EFMigrationsHistory] (
         [MigrationId] nvarchar(150) NOT NULL,
