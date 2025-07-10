@@ -1,99 +1,97 @@
-<div class="w-64 flex-initial ...">
-  <button mat-icon-button matTooltip="Add new transaction" (click)="addTransactionExpense()" color="primary">
-    <mat-icon>add_circle</mat-icon>
-    Add Transaction
-  </button>
-</div>
-<div class="w-64 flex-initial ...">
-  <mat-form-field appearance="outline" class="full-width">
-    <mat-label>Month and Year</mat-label>
-    <input matInput [matDatepicker]="dp" [(ngModel)]="selectedMonthAndYear">
-    <mat-hint>MM/YYYY</mat-hint>
-    <mat-datepicker-toggle matIconSuffix [for]="dp"></mat-datepicker-toggle>
-    <mat-datepicker #dp
-                    startView="multi-year"
-                    (monthSelected)="setMonthAndYear($event, dp)"
-                    panelClass="example-month-picker">
-    </mat-datepicker>
-  </mat-form-field>
-</div>
-<div class="expense-table-container">
-  <table mat-table [dataSource]="transactionTableData" class="expense-table">
-
-    <!-- ID Column (hidden with CSS) -->
-    <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef class="hidden-column"> ID </th>
-      <td mat-cell *matCellDef="let row" class="hidden-column"> {{row.id}} </td>
-    </ng-container>
-
-    <!-- Type Column -->
-    <ng-container matColumnDef="date">
-      <th mat-header-cell *matHeaderCellDef>Transaction date</th>
-      <td mat-cell *matCellDef="let row">{{ row.transactionDate | date:'dd/MM/yyyy' }}</td>
-
-    </ng-container>
-
-    <!-- Type Column -->
-    <ng-container matColumnDef="transactionType">
-      <th mat-header-cell *matHeaderCellDef>Transaction type</th>
-      <td mat-cell *matCellDef="let row">{{ row.transactionType_Name }}</td>
-    </ng-container>
-    <!-- TypeId Column (hidden with CSS)  -->
-    <ng-container matColumnDef="transactionType_Id">
-      <th mat-header-cell *matHeaderCellDef>Transaction type ID</th>
-      <td mat-cell *matCellDef="let row">{{ row.transactionType_Id }}</td>
-    </ng-container>
-
-    <!-- Category Column -->
-    <ng-container matColumnDef="category">
-      <th mat-header-cell *matHeaderCellDef>Category</th>
-      <td mat-cell *matCellDef="let row">{{ row.category_Name }}</td>
-    </ng-container>
-    <!-- Category Column (hidden with CSS)-->
-    <ng-container matColumnDef="category_Id">
-      <th mat-header-cell *matHeaderCellDef>Category ID</th>
-      <td mat-cell *matCellDef="let row">{{ row.category_Id }}</td>
-    </ng-container>
-
-    <!-- Note Column -->
-    <ng-container matColumnDef="note">
-      <th mat-header-cell *matHeaderCellDef>Note</th>
-      <td mat-cell *matCellDef="let row">{{row.note}}</td>
-    </ng-container>
-
-    <!-- Amount Column -->
-    <ng-container matColumnDef="amount">
-      <th mat-header-cell *matHeaderCellDef>Amount</th>
-      <td mat-cell *matCellDef="let row">{{ row.amount }}</td>
-
-    </ng-container>
-
-    <!-- Edit Column -->
-    <ng-container matColumnDef="edit">
-      <th mat-header-cell *matHeaderCellDef></th>
-      <td mat-cell *matCellDef="let row">
-        <button mat-icon-button class="editExpense" (click)="editTransaction(row)">
-          <mat-icon>mode_edit</mat-icon>
+<div class="expense-detail-outer-container">
+  <mat-card class="expense-detail-main-card">
+    <div class="expense-detail-row">
+      <div class="expense-detail-add-btn">
+        <button mat-raised-button color="accent" matTooltip="Add new transaction" (click)="addTransactionExpense()" class="expense-detail-add-transaction-btn">
+          <mat-icon>add_circle</mat-icon>
+          Add Transaction
         </button>
-      </td>
-    </ng-container>
-    <!-- Delete Column -->
-    <ng-container matColumnDef="delete">
-      <th mat-header-cell *matHeaderCellDef></th>
-      <td mat-cell *matCellDef="let row">
-        <button mat-icon-button class="removeExpense" (click)="removeTransaction(row.id)">
-          <mat-icon>delete</mat-icon>
-        </button>
-      </td>
-    </ng-container>
-
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
-  <mat-paginator [pageSizeOptions]="[10, 20, 30]"
-                 showFirstLastButtons
-                 aria-label="Select page of transactions">
-  </mat-paginator>
+      </div>
+      <div class="expense-detail-date-picker">
+        <mat-form-field appearance="outline" class="expense-detail-date-form-field">
+          <mat-label>Month and Year</mat-label>
+          <input matInput [matDatepicker]="dp" [(ngModel)]="selectedMonthAndYear">
+          <mat-hint>MM/YYYY</mat-hint>
+          <mat-datepicker-toggle matIconSuffix [for]="dp"></mat-datepicker-toggle>
+          <mat-datepicker #dp
+                          startView="multi-year"
+                          (monthSelected)="setMonthAndYear($event, dp)"
+                          panelClass="example-month-picker">
+          </mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div class="expense-detail-row-spacer"></div>
+    </div>
+    <div class="expense-detail-table-container">
+      <mat-card class="expense-detail-table-card">
+        <div class="expense-detail-table-scroll">
+          <table mat-table [dataSource]="transactionTableData" class="mat-elevation-z1 expense-detail-table">
+            <!-- ID Column (hidden) -->
+            <ng-container matColumnDef="id">
+              <th mat-header-cell *matHeaderCellDef class="hidden-column">ID</th>
+              <td mat-cell *matCellDef="let row" class="hidden-column">{{row.id}}</td>
+            </ng-container>
+            <!-- Transaction date -->
+            <ng-container matColumnDef="date">
+              <th mat-header-cell *matHeaderCellDef>Transaction date</th>
+              <td mat-cell *matCellDef="let row">{{ row.transactionDate | date:'dd/MM/yyyy' }}</td>
+            </ng-container>
+            <!-- Transaction type -->
+            <ng-container matColumnDef="transactionType">
+              <th mat-header-cell *matHeaderCellDef>Transaction type</th>
+              <td mat-cell *matCellDef="let row">{{ row.transactionType_Name }}</td>
+            </ng-container>
+            <!-- Transaction type ID (hidden) -->
+            <ng-container matColumnDef="transactionType_Id">
+              <th mat-header-cell *matHeaderCellDef class="hidden-column">Transaction type ID</th>
+              <td mat-cell *matCellDef="let row" class="hidden-column">{{ row.transactionType_Id }}</td>
+            </ng-container>
+            <!-- Category -->
+            <ng-container matColumnDef="category">
+              <th mat-header-cell *matHeaderCellDef>Category</th>
+              <td mat-cell *matCellDef="let row">{{ row.category_Name }}</td>
+            </ng-container>
+            <!-- Category ID (hidden) -->
+            <ng-container matColumnDef="category_Id">
+              <th mat-header-cell *matHeaderCellDef class="hidden-column">Category ID</th>
+              <td mat-cell *matCellDef="let row" class="hidden-column">{{ row.category_Id }}</td>
+            </ng-container>
+            <!-- Note -->
+            <ng-container matColumnDef="note">
+              <th mat-header-cell *matHeaderCellDef>Note</th>
+              <td mat-cell *matCellDef="let row">{{row.note}}</td>
+            </ng-container>
+            <!-- Amount -->
+            <ng-container matColumnDef="amount">
+              <th mat-header-cell *matHeaderCellDef>Amount</th>
+              <td mat-cell *matCellDef="let row">{{ row.amount }}</td>
+            </ng-container>
+            <!-- Edit -->
+            <ng-container matColumnDef="edit">
+              <th mat-header-cell *matHeaderCellDef></th>
+              <td mat-cell *matCellDef="let row">
+                <button mat-icon-button (click)="editTransaction(row)">
+                  <mat-icon>mode_edit</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+            <!-- Delete -->
+            <ng-container matColumnDef="delete">
+              <th mat-header-cell *matHeaderCellDef></th>
+              <td mat-cell *matCellDef="let row">
+                <button mat-icon-button (click)="removeTransaction(row.id)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+          <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons aria-label="Select page of transactions"></mat-paginator>
+        </div>
+      </mat-card>
+    </div>
+  </mat-card>
 </div>
 
 

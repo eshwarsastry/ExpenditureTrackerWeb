@@ -1,7 +1,7 @@
 <h2 mat-dialog-title>Add a new Transaction</h2>
 <form [formGroup]="transactionForm" (ngSubmit)="onSave()">
-  <mat-dialog-content>
-    <mat-form-field appearance="fill">
+  <mat-dialog-content class="add-transaction-dialog-content">
+    <mat-form-field appearance="fill" class="add-transaction-form-field">
       <mat-label>Transaction Type</mat-label>
       <mat-select formControlName="transactionType">
         <mat-option *ngFor="let type of transactionTypes" [value]="type.id">
@@ -12,7 +12,7 @@
         Transaction type is required
       </mat-error>
     </mat-form-field>
-    <mat-form-field appearance="fill">
+    <mat-form-field appearance="fill" class="add-transaction-form-field">
       <mat-label>Category</mat-label>
       <mat-select formControlName="transactionCategory">
         <mat-option *ngFor="let category of displayedtransactionCategories" [value]="category.id">
@@ -23,14 +23,14 @@
         Category is required
       </mat-error>
     </mat-form-field>
-    <mat-form-field appearance="fill">
+    <mat-form-field appearance="fill" class="add-transaction-form-field">
       <mat-label>Choose the transaction date</mat-label>
       <input matInput [matDatepicker]="picker" formControlName="transactionDate">
       <mat-hint>DD/MM/YYYY</mat-hint>
       <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
-    <mat-form-field appearance="fill">
+    <mat-form-field appearance="fill" class="add-transaction-form-field">
       <mat-label>Amount</mat-label>
       <input matInput formControlName="transactionAmount" type="number" placeholder="Enter the amount" min="0.01" step="0.01" />
       <mat-error *ngIf="transactionForm.get('transactionAmount')?.hasError('required')">
@@ -40,13 +40,13 @@
         Amount must be greater than 0.
       </mat-error>
     </mat-form-field>
-    <mat-form-field appearance="fill">
+    <mat-form-field appearance="fill" class="add-transaction-form-field">
       <mat-label>Note</mat-label>
       <input matInput formControlName="transactionNote" placeholder="Additional info. here" />
     </mat-form-field>
   </mat-dialog-content>
-  <mat-dialog-actions align="end">
-    <button mat-button color="primary" [disabled]="!transactionForm.valid" (click)="onSave()">Save</button>
+  <mat-dialog-actions align="end" class="add-transaction-dialog-actions">
+    <button mat-flat-button color="primary" [disabled]="!transactionForm.valid" (click)="onSave()">Save</button>
     <button mat-button (click)="onCancel()">Cancel</button>
   </mat-dialog-actions>
 </form>

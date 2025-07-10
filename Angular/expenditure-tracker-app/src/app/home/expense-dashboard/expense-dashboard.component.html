@@ -2,53 +2,37 @@
   <div class="content-board">
     <mat-grid-list cols="4" gutterSize="16px">
       <mat-grid-tile [rowspan]="1" [colspan]="1">
-        <mat-card class="prediction-card">
-          <mat-card-title>
-          </mat-card-title>
-          <mat-card-content>
-            <div>
-              <div class="illustration">
-                <img src="undraw_predictive-analytics.png" alt="analysis Image" />
-              </div>
-              <h6>Expense analysis</h6>
+        <mat-card class="dashboard-card prediction-card">
+          <mat-card-content class="dashboard-card-content">
+            <div class="dashboard-illustration-wrapper">
+              <img src="undraw_predictive-analytics.png" alt="analysis Image" class="dashboard-illustration" />
             </div>
+            <div class="dashboard-card-title">Expense analysis</div>
           </mat-card-content>
-          <mat-card-footer>
-          </mat-card-footer>
         </mat-card>
       </mat-grid-tile>
       <mat-grid-tile [rowspan]="1" [colspan]="1">
-        <mat-card class="catgory-card" (click)="openAddTransactionCategoryDialog()">
-          <mat-card-title></mat-card-title>
-          <mat-card-content>
-            <div>
-              <div class="illustration">
-                <img src="undraw_logic.png" alt="catgeories Image" />
-              </div>
-              <h6>Transaction categories</h6>
+        <mat-card class="dashboard-card catgory-card" (click)="openAddTransactionCategoryDialog()">
+          <mat-card-content class="dashboard-card-content">
+            <div class="dashboard-illustration-wrapper">
+              <img src="undraw_logic.png" alt="catgeories Image" class="dashboard-illustration" />
             </div>
+            <div class="dashboard-card-title">Transaction categories</div>
           </mat-card-content>
-          <mat-card-footer>
-          </mat-card-footer>
         </mat-card>
       </mat-grid-tile>
       <mat-grid-tile [rowspan]="1" [colspan]="1">
-        <mat-card class="expense-card" (click)="openAddTransactionExpenseDialog()">
-          <mat-card-title></mat-card-title>
-          <mat-card-content>
-            <div>
-              <div class="illustration">
-                <img src="undraw_savings.png" alt="expenses Image" />
-              </div>
-              <h6>Expenses & Transactions</h6>
+        <mat-card class="dashboard-card expense-card" (click)="openAddTransactionExpenseDialog()">
+          <mat-card-content class="dashboard-card-content">
+            <div class="dashboard-illustration-wrapper">
+              <img src="undraw_savings.png" alt="expenses Image" class="dashboard-illustration" />
             </div>
+            <div class="dashboard-card-title">Expenses & Transactions</div>
           </mat-card-content>
-          <mat-card-footer>
-          </mat-card-footer>
         </mat-card>
       </mat-grid-tile>
       <mat-grid-tile [rowspan]="2" [colspan]="1">
-        <mat-card class="recent-expense-list-card">
+        <mat-card class="dashboard-card recent-expense-list-card">
           <mat-card-title>Previous transactions</mat-card-title>
           <mat-card-content>
             <div class="transactions-section">
@@ -67,7 +51,7 @@
         </mat-card>
       </mat-grid-tile>
       <mat-grid-tile [rowspan]="1" [colspan]="3">
-        <mat-card class="under-construction-card">
+        <mat-card class="dashboard-card under-construction-card">
           <mat-card-title>Something works</mat-card-title>
           <mat-card-content>
             It works!
@@ -76,7 +60,6 @@
           </mat-card-footer>
         </mat-card>
       </mat-grid-tile>
-
     </mat-grid-list>
   </div>
 </div>

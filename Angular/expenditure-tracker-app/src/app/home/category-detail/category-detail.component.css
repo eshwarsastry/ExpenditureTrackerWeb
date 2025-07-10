@@ -1,3 +1,65 @@
+/* Outer container for centering and spacing */
+.category-detail-outer-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 80vh;
+  width: 100%;
+  margin-top: 40px;
+}
+
+/* Main card with sky bluish background and padding */
+.category-detail-main-card {
+  background: #e3f2fd;
+  padding: 40px 32px 32px 32px;
+  width: 1000px;
+  max-width: 98vw;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+/* Row for add button */
+.category-detail-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+  width: 100%;
+}
+
+.category-detail-add-btn {
+  flex: 1;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.category-detail-add-category-btn {
+  min-width: 180px;
+}
+
+.category-detail-row-spacer {
+  flex: 1;
+}
+
+.category-detail-table-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.category-detail-table-card {
+  width: 900px;
+  max-width: 100%;
+}
+
+.category-detail-table-scroll {
+  overflow-x: auto;
+}
+
+.category-detail-table {
+  min-width: 800px;
+}
+
 .hidden-column {
   display: none;
 }

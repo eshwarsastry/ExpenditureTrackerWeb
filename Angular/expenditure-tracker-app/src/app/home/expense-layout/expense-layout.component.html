@@ -21,6 +21,9 @@
           <mat-icon>account_circle</mat-icon>
         </button>
         <mat-menu #accountMenu [overlapTrigger]="false" yPosition="below">
+          <button mat-menu-item (click)="openImportCsvDialog()">
+            <mat-icon>upload_file</mat-icon>Import from CSV
+          </button>
           <mat-divider></mat-divider>
           <button mat-menu-item>
             <mat-icon>exit_to_app</mat-icon>Logout

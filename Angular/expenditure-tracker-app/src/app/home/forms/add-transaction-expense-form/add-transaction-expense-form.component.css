@@ -1,0 +1,29 @@
+.add-transaction-dialog-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 420px;
+  min-width: 320px;
+  margin: 0 auto;
+  padding-top: 8px;
+}
+
+.add-transaction-form-field {
+  width: 100%;
+  margin-bottom: 18px;
+}
+
+.add-transaction-dialog-actions {
+  margin-top: 12px;
+  padding-bottom: 8px;
+}
+
+.add-transaction-dialog-actions button[mat-flat-button] {
+  font-weight: 600;
+  min-width: 90px;
+  margin-right: 8px;
+}
+
+.add-transaction-dialog-actions button[mat-button] {
+  min-width: 70px;
+}

@@ -1,16 +1,28 @@
-mat-sidenav-container {
+.sidenav-container {
   height: 100%;
   margin: 0;
 }
 
 .mat-sidenav {
-  background-color: #296d8f; /* Dark blue for a modern look */
-  color: white;
+  background-color: #e3f2fd; /* Lighter Azure blue */
+  color: #1976d2;
+}
+
+.mat-sidenav .mat-nav-list .mat-list-item {
+  color: #1976d2 !important;
+}
+
+.mat-sidenav .mat-nav-list .mat-list-item .mat-icon {
+  color: #1565c0 !important;
+}
+
+.mat-sidenav .mat-list-item:hover, .mat-sidenav .mat-list-item.cdk-focused, .mat-sidenav .mat-list-item.cdk-program-focused {
+  background: rgba(25, 118, 210, 0.08);
 }
 
 .mat-toolbar {
-  background-color: #073b54; /* Dark gray-blue */
-  color: white;
+  background-color: #1976d2; /* Strong Azure blue */
+  color: #fff;
   display: flex;
   justify-content: space-between;
   padding: 10px 20px;
@@ -27,11 +39,17 @@ mat-sidenav-container {
 }
 
 .toolbar-right mat-icon {
-    cursor: pointer;
-    margin-left: 15px;
+  cursor: pointer;
+  margin-left: 15px;
+  color: #222 !important; /* Logout icon dark */
 }
 
 .mat-icon {
   margin-right: 10px;
   font-size: 24px;
+}
+
+/* Ensure menu icons are dark for logout */
+.mat-menu-content .mat-icon {
+  color: #222 !important;
 }

@@ -9,6 +9,7 @@ import { AddTransactionCategoryFormComponent } from './forms/add-transaction-cat
 import { ExpenseLayoutComponent } from './expense-layout/expense-layout.component';
 import { CategoryDetailComponent } from './category-detail/category-detail.component';
 import { ExpenseDashboardComponent } from './expense-dashboard/expense-dashboard.component';
+import { ImportCsvPopupComponent } from './forms/import-csv-popup/import-csv-popup.component';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { ExpenseDashboardComponent } from './expense-dashboard/expense-dashboard
     AddTransactionExpenseFormComponent,
     AddTransactionCategoryFormComponent,
     ExpenseLayoutComponent,
-    CategoryDetailComponent
+    CategoryDetailComponent,
+    ImportCsvPopupComponent
   ],
   imports: [
     CommonModule,

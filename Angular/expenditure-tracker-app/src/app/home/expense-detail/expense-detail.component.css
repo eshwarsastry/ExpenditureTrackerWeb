@@ -1,16 +1,86 @@
+/* Outer container for centering and spacing */
+.expense-detail-outer-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 80vh;
+  width: 100%;
+  margin-top: 40px;
+}
+
+/* Main card with sky bluish background and padding */
+.expense-detail-main-card {
+  background: #e3f2fd;
+  padding: 40px 32px 32px 32px;
+  width: 1000px;
+  max-width: 98vw;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+/* Row for add button and date picker */
+.expense-detail-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+  width: 100%;
+}
+
+.expense-detail-add-btn {
+  flex: 1;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.expense-detail-add-transaction-btn {
+  min-width: 180px;
+}
+
+.expense-detail-date-picker {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.expense-detail-date-form-field {
+  width: 220px;
+}
+
+.expense-detail-row-spacer {
+  flex: 1;
+}
+
+.expense-detail-table-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.expense-detail-table-card {
+  width: 900px;
+  max-width: 100%;
+}
+
+.expense-detail-table-scroll {
+  overflow-x: auto;
+}
+
+.expense-detail-table {
+  min-width: 800px;
+}
+
 .hidden-column {
   display: none;
 }
 
 mat-icon-button {
-    font-size: 20px;
+  font-size: 20px;
 }
 
 .full-width {
   width: 100%;
 }
-
-
 
 mat-grid-list {
   width: 100%;
