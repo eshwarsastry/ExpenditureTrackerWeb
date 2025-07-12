@@ -1,4 +1,7 @@
 ﻿using ExpenditureTrackerWeb.Shared.Dto;
+using ExpenditureTrackerWeb.Shared.Dto.Agent;
+using ExpenditureTrackerWeb.Shared.Dto.Predictor;
+using ExpenditureTrackerWeb.Shared.Predictor;
 using ExpenditureTrackerWeb.Shared.Services;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
@@ -10,21 +13,21 @@ namespace ExpenditureTrackerWeb.Controllers
     public class ExpenditureLedgerController : ControllerBase
     {
         private readonly IExpensesService expensesService;
-        private readonly IUserService userService;
         private readonly ITransactionCategoryService transactionCategoryService;
         private readonly ITransactionTypeService transactionTypeService;
         private readonly IImportDataService importDataService;
+        private readonly IExpenditurePredictor expenditurePredictor;
         public ExpenditureLedgerController(IExpensesService _expensesService,
-            IUserService _userService,
             ITransactionCategoryService _transactionCategoryService,
             ITransactionTypeService _transactionTypeService,
-            IImportDataService importDataService)
+            IImportDataService _importDataService,
+            IExpenditurePredictor _expenditurePredictor)
         {
             expensesService = _expensesService;
-            userService = _userService;
             transactionCategoryService = _transactionCategoryService;
             transactionTypeService = _transactionTypeService;
-            this.importDataService = importDataService;
+            importDataService = _importDataService;
+            expenditurePredictor = _expenditurePredictor;
         }
 
         // GET: api/ExpenditureLedger/GetAllTransactionTypes
@@ -56,6 +59,14 @@ namespace ExpenditureTrackerWeb.Controllers
         public async Task<IEnumerable<ExpenseDto>> GetExpensesOfUserByFilter([FromQuery] TransactionsFilterDto filter)
         {
             var result = await expensesService.GetAllByFilter(filter.User_Id, filter.Month, filter.Year);
+            return result;
+        }
+
+        // GET: api/ExpenditureLedger/GetExpensePredictionForNextMonth
+        [HttpGet("GetExpensePredictionForNextMonth")]
+        public async Task<ExpensePredictorResult> GetExpensePredictionForNextMonth(int userId, int month, int year)
+        {
+            var result = await expenditurePredictor.PredictExpenses(userId, month, year);
             return result;
         }
 
@@ -102,6 +113,14 @@ namespace ExpenditureTrackerWeb.Controllers
         public async Task<bool> ImportDataFromCSV(IFormFile importFile, [FromForm] int userId)
         {
             var result = await importDataService.ImportDataAsync(importFile, userId);
+            return result;
+        }
+
+        //POST: api/ExpenditureLedger/ExtractExpenseDetailsFromBill
+        [HttpPost("ExtractExpenseDetailsFromBill")]
+        public async Task<BillDetailsExtractor> ExtractExpenseDetailsFromBill(IFormFile importFile, [FromForm] int userId)
+        {
+            var result = await importDataService.ExtractBillDataAsync(importFile, userId);
             return result;
         }
     }

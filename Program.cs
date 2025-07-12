@@ -1,5 +1,7 @@
-﻿using ExpenditureTrackerWeb.Shared.DbContexts;
+﻿using ExpenditureTrackerWeb.AutoGen;
+using ExpenditureTrackerWeb.Shared.DbContexts;
 using ExpenditureTrackerWeb.Shared.Mappers;
+using ExpenditureTrackerWeb.Shared.Predictor;
 using ExpenditureTrackerWeb.Shared.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -31,6 +33,8 @@ builder.Services.AddScoped<ITransactionCategoryService, TransactionCategoryServi
 builder.Services.AddScoped<ITransactionTypeService, TransactionTypeService>();
 builder.Services.AddScoped<IExpensesService, ExpensesService>();
 builder.Services.AddScoped<IImportDataService, ImportDataService>();
+builder.Services.AddScoped<IExpenditurePredictor, ExpenditurePredictor>();
+builder.Services.AddScoped<IBillInformationExtractorAgent, BillInformationExtractorAgent>();
 // Add mappers to the container.
 builder.Services.AddScoped<IUsersMapper, UsersMapper>();
 builder.Services.AddScoped<ICategoriesMapper, CategoriesMapper>();

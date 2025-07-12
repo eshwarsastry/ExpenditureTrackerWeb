@@ -1,5 +1,6 @@
 ﻿using ExpenditureTrackerWeb.Shared.DbContexts;
 using ExpenditureTrackerWeb.Shared.Dto;
+using ExpenditureTrackerWeb.Shared.Dto.Predictor;
 using ExpenditureTrackerWeb.Shared.Entities;
 using ExpenditureTrackerWeb.Shared.Mappers;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +14,7 @@ namespace ExpenditureTrackerWeb.Shared.Services
         public Task RemoveTransaction(int transactionId);
         public Task<IEnumerable<ExpenseDto>> GetAllByFilter(int userId, int month, int year);
         public Task AddBulkExpenses(List<ExpenseDto> expenseDtos);
+        public Task<List<ExpensePredictorData>> GetExpensesOfUserforPrediction(int userId);
 
     }
     public class ExpensesService : IExpensesService
@@ -38,7 +40,7 @@ namespace ExpenditureTrackerWeb.Shared.Services
             {
                 var expenses = await dbContext.Expenses
                     .Include(tc => tc.EX_TransactionCategory)
-                    .Include(t => t.EX_TransactionCategory.TC_TransactionType)  
+                    .Include(t => t.EX_TransactionCategory.TC_TransactionType)
                     .Where(e => e.EX_User.U_Id == userId).ToListAsync();
                 foreach (var expense in expenses)
                 {
@@ -88,7 +90,7 @@ namespace ExpenditureTrackerWeb.Shared.Services
                             existingExpense.EX_TransactionCategory = transactionCategory;
                             dbContext.Update(existingExpense);
                             await dbContext.SaveChangesAsync();
-                        }  
+                        }
                     }
                     else
                     {
@@ -104,7 +106,7 @@ namespace ExpenditureTrackerWeb.Shared.Services
                         await dbContext.SaveChangesAsync();
 
                         expenseDto.Id = expense.EX_Id;
-                        
+
                     }
                 }
             }
@@ -131,6 +133,25 @@ namespace ExpenditureTrackerWeb.Shared.Services
 
             await dbContext.Expenses.AddRangeAsync(expenseEntities);
             await dbContext.SaveChangesAsync();
+        }
+
+        public async Task<List<ExpensePredictorData>> GetExpensesOfUserforPrediction(int userId)
+        {
+            // Group all the expenses by month, year and sum the amounts and store the result in expensePredictorDatas.
+            var groupedExpenses = await dbContext.Expenses
+                .Where(expense => expense.EX_User.U_Id == userId && expense.EX_Amount < 0 
+                && expense.EX_DateTime.Month != DateTime.Now.Month) // Exclude current year and month and take only expenses
+                .GroupBy(g => new { g.EX_UserU_Id, g.EX_DateTime.Year, g.EX_DateTime.Month })
+                .Select(e => new ExpensePredictorData
+                {
+                    UserId = e.Key.EX_UserU_Id,
+                    Month = e.Key.Month,
+                    Year = e.Key.Year,
+                    Amount = (float)e.Sum(g => g.EX_Amount) // Explicit cast to float
+                })
+                .ToListAsync();
+            
+            return groupedExpenses;
         }
 
         public async Task RemoveTransaction(int transactionId)

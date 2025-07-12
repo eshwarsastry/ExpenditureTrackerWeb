@@ -1,4 +1,6 @@
-﻿using ExpenditureTrackerWeb.Shared.Dto;
+﻿using ExpenditureTrackerWeb.AutoGen;
+using ExpenditureTrackerWeb.Shared.Dto;
+using ExpenditureTrackerWeb.Shared.Dto.Agent;
 using ExpenditureTrackerWeb.Shared.Enums;
 using System.Globalization;
 
@@ -7,8 +9,11 @@ namespace ExpenditureTrackerWeb.Shared.Services
     public interface IImportDataService
     {
         public Task<bool> ImportDataAsync(IFormFile importFile, int userId);
+
+        public Task<BillDetailsExtractor> ExtractBillDataAsync(IFormFile importFile, int userId);
+
     }
-    public class ImportDataService: IImportDataService
+    public class ImportDataService : IImportDataService
     {
         private readonly ITransactionTypeService transactionTypeService;
         private readonly ITransactionCategoryService transactionCategoryService;
@@ -27,7 +32,7 @@ namespace ExpenditureTrackerWeb.Shared.Services
         {
             var transactionTypes = await transactionTypeService.GetAll();
             var transactionCategories = await transactionCategoryService.GetAllByUserId(userId);
-            
+
             var expensesDto = new List<ExpenseDto>();
             var newTransactionCategories = new List<CategoryDto>();
 
@@ -47,7 +52,7 @@ namespace ExpenditureTrackerWeb.Shared.Services
                         throw new InvalidOperationException("CSV file is empty or does not contain a header.");
                     }
                     var headerColumns = headerLine.Split(',');
-                    
+
                     var categoryIndex = Array.FindIndex(headerColumns, h => h.Trim().Equals("Category", StringComparison.OrdinalIgnoreCase));
                     var amountIndex = Array.FindIndex(headerColumns, h => h.Trim().Equals("Amount", StringComparison.OrdinalIgnoreCase));
                     var transactionDate = Array.FindIndex(headerColumns, h => h.Trim().Equals("Date", StringComparison.OrdinalIgnoreCase));
@@ -67,7 +72,7 @@ namespace ExpenditureTrackerWeb.Shared.Services
                         var dateValue = columns.Length > transactionDate ? DateTime.Parse(columns[transactionDate].Trim()) : DateTime.Now;
                         var noteValue = columns.Length > noteIndex ? columns[noteIndex].Trim() : string.Empty;
 
-                        if (!string.IsNullOrEmpty(categoryName) 
+                        if (!string.IsNullOrEmpty(categoryName)
                             && !transactionCategories.Any(c => c.Name.Equals(categoryName, StringComparison.OrdinalIgnoreCase))
                             && !newTransactionCategories.Any(c => c.Name.Equals(categoryName, StringComparison.OrdinalIgnoreCase)))
                         {
@@ -77,7 +82,7 @@ namespace ExpenditureTrackerWeb.Shared.Services
                                 Name = categoryName,
                                 TransactionType_Id = amountValue > new Decimal(0.00) ?
                                 transactionTypes.Where(transactionTypeEntity => transactionTypeEntity.Id == (int)TransactionTypeEnum.Income).First().Id :
-                                transactionTypes.Where(transactionTypeEntity => transactionTypeEntity.Id == (int)TransactionTypeEnum.Expenditure).First().Id, 
+                                transactionTypes.Where(transactionTypeEntity => transactionTypeEntity.Id == (int)TransactionTypeEnum.Expenditure).First().Id,
                                 // Assuming amount is positive for Income and negative for Expenditure
                             };
                             newTransactionCategories.Add(categoryDto);
@@ -97,13 +102,13 @@ namespace ExpenditureTrackerWeb.Shared.Services
                             };
                             expensesDto.Add(expenseDto);
                         }
-                        
+
                     }
                 }
             }
 
             // Add the new categories
-            if(newTransactionCategories.Count > 0)
+            if (newTransactionCategories.Count > 0)
             {
                 await transactionCategoryService.AddBulkCategories(newTransactionCategories);
             }
@@ -114,6 +119,31 @@ namespace ExpenditureTrackerWeb.Shared.Services
             }
 
             return true;
+        }
+
+        public async Task<BillDetailsExtractor> ExtractBillDataAsync(IFormFile imageFile, int userId)
+        {
+            if (imageFile == null || imageFile.Length == 0)
+            {
+                throw new ArgumentException("Import file is empty or null.");
+            }
+
+            // Read the file into a memory stream
+            using var memoryStream = new MemoryStream();
+            await imageFile.CopyToAsync(memoryStream);
+
+            // Get byte array
+            var imageBytes = memoryStream.ToArray();
+
+            // Convert to base64 string
+            var base64Image = Convert.ToBase64String(imageBytes);
+
+            // Pass the base64 string to the agent
+            var billDetailsExtractorAgent = new BillInformationExtractorAgent();
+
+            var result = await billDetailsExtractorAgent.InitializeAgentsAsync(base64Image);
+
+            return result;
         }
     }
 }
