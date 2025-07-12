@@ -10,6 +10,8 @@ import { ExpenseLayoutComponent } from './expense-layout/expense-layout.componen
 import { CategoryDetailComponent } from './category-detail/category-detail.component';
 import { ExpenseDashboardComponent } from './expense-dashboard/expense-dashboard.component';
 import { ImportCsvPopupComponent } from './forms/import-csv-popup/import-csv-popup.component';
+import { ExpenseAnalysisComponent } from './expense-analysis/expense-analysis.component';
+import { provideNativeDateAdapter } from '@angular/material/core';
 
 
 @NgModule({
@@ -20,7 +22,8 @@ import { ImportCsvPopupComponent } from './forms/import-csv-popup/import-csv-pop
     AddTransactionCategoryFormComponent,
     ExpenseLayoutComponent,
     CategoryDetailComponent,
-    ImportCsvPopupComponent
+    ImportCsvPopupComponent,
+    ExpenseAnalysisComponent
   ],
   imports: [
     CommonModule,
@@ -28,6 +31,9 @@ import { ImportCsvPopupComponent } from './forms/import-csv-popup/import-csv-pop
     MaterialModule,
     FormsModule,
     ReactiveFormsModule
+  ],
+  providers: [
+    provideNativeDateAdapter()
   ]
 })
 export class HomeModule { }

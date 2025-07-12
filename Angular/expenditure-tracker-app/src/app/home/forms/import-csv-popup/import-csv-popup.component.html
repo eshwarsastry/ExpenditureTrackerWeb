@@ -1,16 +1,22 @@
 <h2 mat-dialog-title>Import Data from CSV</h2>
-<mat-dialog-content class="import-csv-dialog-content">
-  <form>
-    <div class="import-csv-form-field">
-      <label for="csvFileInput" class="import-csv-label">Select CSV file</label>
-      <input id="csvFileInput" type="file" accept=".csv" (change)="onFileSelected($event)" />
-    </div>
-    <div *ngIf="fileName" class="import-csv-file-name">Selected: {{ fileName }}</div>
-    <div *ngIf="errorMessage" class="import-csv-error">{{ errorMessage }}</div>
-    <div *ngIf="successMessage" class="import-csv-success">{{ successMessage }}</div>
-  </form>
-</mat-dialog-content>
-<mat-dialog-actions align="end" class="import-csv-dialog-actions">
-  <button mat-flat-button color="primary" [disabled]="!selectedFile" (click)="onUpload()">Upload</button>
-  <button mat-button mat-dialog-close>Cancel</button>
-</mat-dialog-actions>
+<div *ngIf="isLoading" class="loading-overlay">
+  <mat-spinner></mat-spinner>
+  <div>Uploading, please wait...</div>
+</div>
+<div [class.blur-content]="isLoading">
+  <mat-dialog-content class="import-csv-dialog-content">
+    <form>
+      <div class="import-csv-form-field">
+        <label for="csvFileInput" class="import-csv-label">Select CSV file</label>
+        <input id="csvFileInput" type="file" accept=".csv" (change)="onFileSelected($event)" />
+      </div>
+      <div *ngIf="fileName" class="import-csv-file-name">Selected: {{ fileName }}</div>
+      <div *ngIf="errorMessage" class="import-csv-error">{{ errorMessage }}</div>
+      <div *ngIf="successMessage" class="import-csv-success">{{ successMessage }}</div>
+    </form>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end" class="import-csv-dialog-actions">
+    <button mat-flat-button color="primary" [disabled]="!selectedFile" (click)="onUpload()">Upload</button>
+    <button mat-button mat-dialog-close>Cancel</button>
+  </mat-dialog-actions>
+</div>

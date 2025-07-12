@@ -1,6 +1,6 @@
 <mat-sidenav-container class="sidenav-container">
   <!-- Side Navigation -->
-  <mat-sidenav #sidenav mode="side" [class.mat-elevation-z4]="true" style="width: 240px">
+  <mat-sidenav #sidenav mode="side" [opened]="true" [class.mat-elevation-z4]="true" style="width: 240px">
     <mat-nav-list dense>
       <mat-list-item routerLink="../home/dashboard"><mat-icon>dashboard</mat-icon>Dashboard</mat-list-item>
       <mat-list-item routerLink="../home/transactions-detail"><mat-icon>monetization_on</mat-icon>Expense</mat-list-item>
@@ -11,7 +11,7 @@
   <!-- Main Content Area -->
   <mat-sidenav-content>
     <mat-toolbar color="primary">
-      <button mat-icon-button matTooltip="Application Menu" (click)="sidenav.toggle()">
+      <button mat-icon-button matTooltip="Application Menu" (click)="sidenav.toggle()" style="display: none;">
         <mat-icon>menu</mat-icon>
       </button>
       Welcome

@@ -30,7 +30,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ITransactionCategoryService, TransactionCategoryService>();
 builder.Services.AddScoped<ITransactionTypeService, TransactionTypeService>();
 builder.Services.AddScoped<IExpensesService, ExpensesService>();
-
+builder.Services.AddScoped<IImportDataService, ImportDataService>();
 // Add mappers to the container.
 builder.Services.AddScoped<IUsersMapper, UsersMapper>();
 builder.Services.AddScoped<ICategoriesMapper, CategoriesMapper>();

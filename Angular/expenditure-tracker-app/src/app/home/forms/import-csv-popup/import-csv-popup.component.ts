@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse } from '@angular/common/http';
+import { SharedService } from '../../../shared/services/shared.service';
+import { ImportDataService } from '../../../shared/services/import-data.service';
 
 @Component({
   selector: 'app-import-csv-popup',
@@ -12,11 +14,19 @@ export class ImportCsvPopupComponent {
   fileName: string = '';
   errorMessage: string = '';
   successMessage: string = '';
-
+  loggedInUserId: number = 0;
+  isLoading: boolean = false;
   constructor(
-    private http: HttpClient,
-    private dialogRef: MatDialogRef<ImportCsvPopupComponent>
+    private dialogRef: MatDialogRef<ImportCsvPopupComponent>,
+    private importDataService: ImportDataService,
+    private sharedService: SharedService,
   ) {}
+
+  ngOnInit() {
+    this.sharedService.userIdSubject.subscribe((data) => {
+      this.loggedInUserId = data;
+    });
+  }
 
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -33,17 +43,19 @@ export class ImportCsvPopupComponent {
       this.errorMessage = 'Please select a CSV file.';
       return;
     }
+    this.isLoading = true;
     const formData = new FormData();
-    formData.append('file', this.selectedFile);
-    this.errorMessage = '';
-    this.successMessage = '';
-    this.http.post('/api/import-csv', formData).subscribe({
-      next: () => {
-        this.successMessage = 'CSV imported successfully!';
+    formData.append('importFile', this.selectedFile);
+    formData.append('userId', this.loggedInUserId.toString());
+    this.importDataService.importData(formData).subscribe({
+      next: (response) => {
+        this.successMessage = response.message;
+        this.isLoading = false;
         setTimeout(() => this.dialogRef.close(true), 1200);
       },
       error: (err: HttpErrorResponse) => {
         this.errorMessage = err.error?.message || 'Failed to import CSV.';
+        this.isLoading = false;
       }
     });
   }

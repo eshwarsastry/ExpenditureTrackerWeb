@@ -15,6 +15,8 @@
 
   <ItemGroup>
     <PackageReference Include="AutoGen" Version="0.2.3" />
+    <PackageReference Include="AutoGen.Core" Version="0.2.3" />
+    <PackageReference Include="AutoGen.DotnetInteractive" Version="0.2.3" />
     <PackageReference Include="AutoGen.Ollama" Version="0.2.3" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.10" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.10" />
@@ -52,6 +54,8 @@
     <Folder Include="Angular\expenditure-tracker-app\src\app\home\forms\" />
     <Folder Include="Angular\expenditure-tracker-app\src\app\shared\interfaces\" />
     <Folder Include="Angular\expenditure-tracker-app\src\app\shared\services\" />
+    <Folder Include="AutoGen\Services\" />
+    <Folder Include="AutoGen\Prompts\" />
     <Folder Include="Migrations\" />
   </ItemGroup>
 

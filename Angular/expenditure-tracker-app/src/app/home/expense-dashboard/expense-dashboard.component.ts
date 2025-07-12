@@ -26,6 +26,7 @@ export class ExpenseDashboardComponent implements OnInit {
   loggedInUserId: number = 0; //Fetch login user data to be used for identification in backend APIs.
   editable = false;
   isLoading = true;
+  hasOverflow = false;
 
   ngOnInit() {
     this.sharedService.userIdSubject.subscribe((data) => {
@@ -103,11 +104,23 @@ export class ExpenseDashboardComponent implements OnInit {
       (data) => {
         this.recentTransactions = data;
         this.isLoading = false;
+        // Check for overflow after data loads
+        setTimeout(() => this.checkOverflow(), 100);
       },
       (error) => {
         console.error('Error fetching transactions:', error);
         this.isLoading = false;
       }
     );
+  }
+
+  checkOverflow(): void {
+    const transactionsSection = document.querySelector('.transactions-section');
+    if (transactionsSection) {
+      const ul = transactionsSection.querySelector('ul');
+      if (ul) {
+        this.hasOverflow = ul.scrollHeight > ul.clientHeight;
+      }
+    }
   }
 }

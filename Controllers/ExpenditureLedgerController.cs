@@ -13,16 +13,18 @@ namespace ExpenditureTrackerWeb.Controllers
         private readonly IUserService userService;
         private readonly ITransactionCategoryService transactionCategoryService;
         private readonly ITransactionTypeService transactionTypeService;
-
+        private readonly IImportDataService importDataService;
         public ExpenditureLedgerController(IExpensesService _expensesService,
             IUserService _userService,
             ITransactionCategoryService _transactionCategoryService,
-            ITransactionTypeService _transactionTypeService)
+            ITransactionTypeService _transactionTypeService,
+            IImportDataService importDataService)
         {
             expensesService = _expensesService;
             userService = _userService;
             transactionCategoryService = _transactionCategoryService;
             transactionTypeService = _transactionTypeService;
+            this.importDataService = importDataService;
         }
 
         // GET: api/ExpenditureLedger/GetAllTransactionTypes
@@ -93,6 +95,14 @@ namespace ExpenditureTrackerWeb.Controllers
         public async Task DeleteCategory(int categoryId)
         {
             await transactionCategoryService.RemoveCategory(categoryId);
+        }
+
+        //POST: api/ExpenditureLedger/ImportDataFromCSV
+        [HttpPost("ImportDataFromCSV")]
+        public async Task<bool> ImportDataFromCSV(IFormFile importFile, [FromForm] int userId)
+        {
+            var result = await importDataService.ImportDataAsync(importFile, userId);
+            return result;
         }
     }
 }

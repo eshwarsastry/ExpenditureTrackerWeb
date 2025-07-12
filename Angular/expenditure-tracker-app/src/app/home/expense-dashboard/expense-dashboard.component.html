@@ -2,7 +2,7 @@
   <div class="content-board">
     <mat-grid-list cols="4" gutterSize="16px">
       <mat-grid-tile [rowspan]="1" [colspan]="1">
-        <mat-card class="dashboard-card prediction-card">
+        <mat-card class="dashboard-card prediction-card" routerLink="../expense-analysis" style="cursor:pointer;">
           <mat-card-content class="dashboard-card-content">
             <div class="dashboard-illustration-wrapper">
               <img src="undraw_predictive-analytics.png" alt="analysis Image" class="dashboard-illustration" />
@@ -35,7 +35,7 @@
         <mat-card class="dashboard-card recent-expense-list-card">
           <mat-card-title>Previous transactions</mat-card-title>
           <mat-card-content>
-            <div class="transactions-section">
+            <div class="transactions-section" [class.overflow]="hasOverflow">
               <div *ngIf="isLoading">Loading transactions...</div>
               <div *ngIf="!isLoading && recentTransactions.length === 0">No transactions available.</div>
               <ul *ngIf="recentTransactions.length > 0">
@@ -43,6 +43,10 @@
                   {{ transaction.transactionDate | date:'dd/MM/yyyy' }} - {{ transaction.category_Name }} - ${{ transaction.amount }}
                 </li>
               </ul>
+              <div *ngIf="hasOverflow" class="more-indicator">
+                <mat-icon>more_horiz</mat-icon>
+                <span>More transactions</span>
+              </div>
             </div>
           </mat-card-content>
           <mat-card-footer>

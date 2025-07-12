@@ -12,6 +12,7 @@ namespace ExpenditureTrackerWeb.Shared.Services
         public Task<ExpenseDto> CreateNewLedgerEntry(ExpenseDto expenseDto);
         public Task RemoveTransaction(int transactionId);
         public Task<IEnumerable<ExpenseDto>> GetAllByFilter(int userId, int month, int year);
+        public Task AddBulkExpenses(List<ExpenseDto> expenseDtos);
 
     }
     public class ExpensesService : IExpensesService
@@ -108,6 +109,28 @@ namespace ExpenditureTrackerWeb.Shared.Services
                 }
             }
             return expenseDto;
+        }
+
+        public async Task AddBulkExpenses(List<ExpenseDto> expenseDtos)
+        {
+            List<Expense> expenseEntities = new List<Expense>();
+            // Map each ExpenseDto to a Expense entity and add it to the database
+            foreach (var expenseDto in expenseDtos)
+            {
+                var user = await dbContext.Users.Where(u => u.U_Id == expenseDto.User_Id).FirstOrDefaultAsync();
+                if (user != null)
+                {
+                    var transactionCategory = await dbContext.TransactionCategories.Where(t => t.TC_Id == expenseDto.Category_Id).FirstOrDefaultAsync();
+                    if (transactionCategory != null)
+                    {
+                        var expenseEntity = expensesMapper.ToExpenseEntity(expenseDto, transactionCategory, user);
+                        expenseEntities.Add(expenseEntity);
+                    }
+                }
+            }
+
+            await dbContext.Expenses.AddRangeAsync(expenseEntities);
+            await dbContext.SaveChangesAsync();
         }
 
         public async Task RemoveTransaction(int transactionId)

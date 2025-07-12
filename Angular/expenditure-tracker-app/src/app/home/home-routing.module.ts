@@ -4,6 +4,7 @@ import { ExpenseDashboardComponent } from './expense-dashboard/expense-dashboard
 import { ExpenseDetailComponent } from './expense-detail/expense-detail.component';
 import { ExpenseLayoutComponent } from './expense-layout/expense-layout.component';
 import { CategoryDetailComponent } from './category-detail/category-detail.component';
+import { ExpenseAnalysisComponent } from './expense-analysis/expense-analysis.component';
 
 const routes: Routes = [
   {
@@ -12,6 +13,7 @@ const routes: Routes = [
       { path: 'dashboard', component: ExpenseDashboardComponent },
       { path: 'transactions-detail', component: ExpenseDetailComponent },
       { path: 'categories-detail', component: CategoryDetailComponent },
+      { path: 'expense-analysis', component: ExpenseAnalysisComponent },
       {
         path: '**',
         redirectTo: 'login',

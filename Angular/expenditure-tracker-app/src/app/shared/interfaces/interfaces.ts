@@ -104,4 +104,6 @@ export interface ExpenseDialogData {
   editable: boolean;         // A boolean flag to indicate if editing is allowed
 }
 
+export interface ImportData {
 
+}

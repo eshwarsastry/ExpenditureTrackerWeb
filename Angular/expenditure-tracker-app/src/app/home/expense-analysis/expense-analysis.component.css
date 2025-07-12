@@ -1,0 +1,35 @@
+.expense-analysis-container {
+  padding: 32px 24px 24px 24px;
+  min-height: 400px;
+  max-width: 800px;
+  margin: 40px auto 0 auto;
+  background: #e3f2fd;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(25, 118, 210, 0.06);
+}
+
+.expense-analysis-container h2 {
+  font-size: 1.3rem;
+  font-weight: 500;
+  margin-bottom: 18px;
+}
+
+.analysis-date-picker {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.analysis-date-form-field {
+  width: 240px;
+}
+
+.d3-chart {
+  min-height: 220px;
+  border: 1px solid #e0e0e0;
+  margin-bottom: 24px;
+  background: #fafbff;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+} 

@@ -6,6 +6,7 @@ namespace ExpenditureTrackerWeb.Shared.Mappers
     public interface IExpensesMapper
     {
         public ExpenseDto ToExpenseDto(Expense expense);
+        public Expense ToExpenseEntity(ExpenseDto expenseDto, TransactionCategory transactionCategory, User user);
     }
 
     public class ExpensesMapper: IExpensesMapper
@@ -25,6 +26,19 @@ namespace ExpenditureTrackerWeb.Shared.Mappers
                 Note = expense.EX_Note,
             };
 
+        }
+
+        public Expense ToExpenseEntity(ExpenseDto expenseDto, TransactionCategory transactionCategory, User user)
+        {
+            return new Expense()
+            {
+                EX_Id = expenseDto.Id,
+                EX_User = user,
+                EX_TransactionCategory = transactionCategory,
+                EX_Amount = expenseDto.Amount,
+                EX_DateTime = expenseDto.TransactionDate,
+                EX_Note = expenseDto.Note
+            };
         }
     }
 }

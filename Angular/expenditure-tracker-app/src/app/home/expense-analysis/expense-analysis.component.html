@@ -1,0 +1,21 @@
+<div class="expense-analysis-container">
+  <h2>Expense Analysis</h2>
+  <div class="analysis-date-picker">
+    <mat-form-field appearance="outline" class="analysis-date-form-field">
+      <mat-label>Date range</mat-label>
+      <mat-date-range-input [rangePicker]="picker" [formGroup]="dateRange">
+        <input matStartDate formControlName="start" placeholder="Start date">
+        <input matEndDate formControlName="end" placeholder="End date">
+      </mat-date-range-input>
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+    </mat-form-field>
+  </div>
+  <div id="d3-chart" class="d3-chart">
+    <span *ngIf="!allTransactions || allTransactions.length === 0">No data for line chart.</span>
+  </div>
+  <div id="d3-pie-chart" class="d3-chart">
+    <span *ngIf="!allTransactions || allTransactions.length === 0">No data for pie chart.</span>
+  </div>
+  <p>Analysis content will go here.</p>
+</div> 
