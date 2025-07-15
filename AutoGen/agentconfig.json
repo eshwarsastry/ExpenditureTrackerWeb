@@ -5,7 +5,7 @@
       "config_list": [
         {
           "model": "gemini_flash",
-          "api_key": "AIzaSyAjdKFXe6qKFlRSIKOmEIZ3J_RSPB98KGg",
+          "api_key": "",
           "base_url": "https://gemini.googleapis.com/v1alpha2"
         }
       ],
@@ -18,7 +18,7 @@
       "config_list": [
         {
           "model": "",
-          "api_key": "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",
+          "api_key": "",
         }
       ]
 
