@@ -122,7 +122,7 @@ namespace ExpenditureTrackerWeb.Shared.Services
                 var user = await dbContext.Users.Where(u => u.U_Id == expenseDto.User_Id).FirstOrDefaultAsync();
                 if (user != null)
                 {
-                    var transactionCategory = await dbContext.TransactionCategories.Where(t => t.TC_Id == expenseDto.Category_Id).FirstOrDefaultAsync();
+                    var transactionCategory = await dbContext.TransactionCategories.Where(t => t.TC_Name == expenseDto.Category_Name).FirstOrDefaultAsync();
                     if (transactionCategory != null)
                     {
                         var expenseEntity = expensesMapper.ToExpenseEntity(expenseDto, transactionCategory, user);

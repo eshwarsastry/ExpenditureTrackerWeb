@@ -1,11 +1,10 @@
 import { OnInit, Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { AddTransactionCategoryFormComponent } from '../forms/add-transaction-category-form/add-transaction-category-form.component';
 import { AddTransactionExpenseFormComponent } from '../forms/add-transaction-expense-form/add-transaction-expense-form.component';
 import { SharedService } from '../../shared/services/shared.service';
 import { TransactionService } from '../../shared/services/transaction.service';
-import { CategoryDialogData, ExpenseDialogData, LoginResponse, TransactionCategory, Transactions } from '../../shared/interfaces/interfaces';
+import { ExpenseDialogData, LoginResponse, TransactionCategory, Transactions } from '../../shared/interfaces/interfaces';
 
 @Component({
   selector: 'app-expense-dashboard',
@@ -61,22 +60,12 @@ export class ExpenseDashboardComponent implements OnInit {
   }
 
   openAddTransactionCategoryDialog() {
-    const dialogData: CategoryDialogData = {
-      transactionCategoryRow: this.transactionCategory,
-      loggedInUserId: this.loggedInUserId,
-      editable: this.editable
-    };
-    const dialogRef = this.dialog.open(AddTransactionCategoryFormComponent, {
-      width: '400px',
-      data: dialogData
-    });
-
-
-    dialogRef.afterClosed().subscribe(result => {
-      // Logic after the dialog is closed, if needed
-      this.transactionCategory.id = 0; //reset value.
-      this.transactionCategory = this.initializeTransactionCategory();
-    });
+    this.sharedService.openAddTransactionCategoryDialog(this.loggedInUserId, this.editable, this.transactionCategory)
+      .subscribe(result => {
+        // Logic after the dialog is closed, if needed
+        this.transactionCategory.id = 0; //reset value.
+        this.transactionCategory = this.initializeTransactionCategory();
+      });
   }
 
   openAddTransactionExpenseDialog() {

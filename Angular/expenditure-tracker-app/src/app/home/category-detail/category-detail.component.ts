@@ -2,8 +2,7 @@ import { OnInit, Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { AddTransactionCategoryFormComponent } from '../forms/add-transaction-category-form/add-transaction-category-form.component';
-import { CategoryDialogData, TransactionCategory } from '../../shared/interfaces/interfaces';
+import { TransactionCategory } from '../../shared/interfaces/interfaces';
 import { SharedService } from '../../shared/services/shared.service';
 import { TransactionCategoryService } from '../../shared/services/transaction-category.service';
 
@@ -52,25 +51,15 @@ export class CategoryDetailComponent implements OnInit {
   }
 
   addTransactionCategory() {
-    const dialogData: CategoryDialogData = {
-      transactionCategoryRow: this.transactionCategoryRow,
-      loggedInUserId: this.loggedInUserId,
-      editable: this.editable
-    };
-    const dialogRef = this.dialog.open(AddTransactionCategoryFormComponent, {
-      width: '400px',
-      data: dialogData
-    });
-
-
-    dialogRef.afterClosed().subscribe(result => {
-      // Logic after the dialog is closed, if needed
-      this.transactionCategoryRow.id = 0; //reset value.
-      this.transactionCategoryRow = this.initializeTransactionCategory();
-      this.transactionCategoryService.getAllTransactionCategories(this.loggedInUserId).subscribe((response) => {
-        this.categoryTableData.data = response;
+    this.sharedService.openAddTransactionCategoryDialog(this.loggedInUserId, this.editable, this.transactionCategoryRow)
+      .subscribe(result => {
+        // Logic after the dialog is closed, if needed
+        this.transactionCategoryRow.id = 0; //reset value.
+        this.transactionCategoryRow = this.initializeTransactionCategory();
+        this.transactionCategoryService.getAllTransactionCategories(this.loggedInUserId).subscribe((response) => {
+          this.categoryTableData.data = response;
+        });
       });
-    });
   }
 
   editTransactionCategory(rowData: TransactionCategory) {

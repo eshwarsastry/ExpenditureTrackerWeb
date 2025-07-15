@@ -1,0 +1,44 @@
+{
+  "llm_configurations": {
+    "gemini_flash": {
+      "type": "gemini",
+      "config_list": [
+        {
+          "model": "gemini_flash",
+          "api_key": "AIzaSyAjdKFXe6qKFlRSIKOmEIZ3J_RSPB98KGg",
+          "base_url": "https://gemini.googleapis.com/v1alpha2"
+        }
+      ],
+      "temperature": 0.5,
+      "timeout": 120,
+      "max_tokens": 4096
+    },
+    "openAI": {
+      "type": "openAi",
+      "config_list": [
+        {
+          "model": "",
+          "api_key": "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",
+        }
+      ]
+
+    },
+    "codellama": {
+      "type": "codellama:7b-instruct",
+      "config_list": [
+        {
+          "model": "codellama:7b-instruct",
+          "api_key": "NULL",
+          "base_url": "localhost",
+          "port": 11434,
+          "price": [ 0.0, 0.0 ]
+        }
+      ]
+    },
+      "temperature": 0.2,
+      "timeout": 120,
+      "max_tokens": 4096
+    }
+  },
+  "fallback_config": "deepseek-r1"
+}

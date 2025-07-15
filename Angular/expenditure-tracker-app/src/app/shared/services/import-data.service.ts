@@ -12,8 +12,20 @@ export class ImportDataService {
 
    }
    
-   importData(formData: FormData): Observable<any> {
+   importData(file: File, userId: number): Observable<any> {
+    const formData = new FormData();
+    formData.append('importFile', file);
+    formData.append('userId', userId.toString());
     const url = `${this.apiUrl}/ExpenditureLedger/ImportDataFromCSV`;
+
+    return this.http.post<any>(url, formData);
+  }
+
+  uploadBillImage(file: File, userId: number): Observable<any> {
+    const formData = new FormData();
+    formData.append('importFile', file);
+    formData.append('userId', userId.toString());
+    const url = `${this.apiUrl}/ExpenditureLedger/UploadExpenseDetailsFromBill`;
 
     return this.http.post<any>(url, formData);
   }

@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
+import { AddTransactionCategoryFormComponent } from '../../home/forms/add-transaction-category-form/add-transaction-category-form.component';
+import { CategoryDialogData, TransactionCategory } from '../interfaces/interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +13,7 @@ export class SharedService {
 
   public userIdSubject = new BehaviorSubject<number>(this.getUserIdFromStorage());
 
-  constructor() { }
+  constructor(private dialog: MatDialog) { }
 
   private dataSubject = new BehaviorSubject<any>(null);
   data$ = this.dataSubject.asObservable();
@@ -36,6 +39,22 @@ export class SharedService {
   logout() {
     localStorage.removeItem(this.userIdKey);
     this.userIdSubject.next(0);
+  }
+
+  // Method to open the add transaction category dialog
+  openAddTransactionCategoryDialog(loggedInUserId: number, editable: boolean = false, transactionCategoryRow: TransactionCategory = { id: 0, user_Id: 0, transactionType_Id: 0, transactionType_Name: '', name: '', description: '' }) {
+    const dialogData: CategoryDialogData = {
+      transactionCategoryRow: transactionCategoryRow,
+      loggedInUserId: loggedInUserId,
+      editable: editable
+    };
+    
+    const dialogRef = this.dialog.open(AddTransactionCategoryFormComponent, {
+      width: '400px',
+      data: dialogData
+    });
+
+    return dialogRef.afterClosed();
   }
 }
 

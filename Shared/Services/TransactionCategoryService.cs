@@ -13,6 +13,7 @@ namespace ExpenditureTrackerWeb.Shared.Services
         public Task AddBulkCategories(List<CategoryDto> categoryDtos);
 
         public Task RemoveCategory(int categoryId);
+        public Task<CategoryDto> GetByCategoryName(string categoryName, int userId);
 
     }
 
@@ -21,7 +22,7 @@ namespace ExpenditureTrackerWeb.Shared.Services
         private readonly ApplicationDbContext dbContext;
         private readonly IUserService userService;
         private readonly ICategoriesMapper categoriesMapper;
-        
+
         public TransactionCategoryService(ApplicationDbContext _dbContext,
             IUserService _userService,
             ICategoriesMapper _categoriesMapper,
@@ -49,6 +50,23 @@ namespace ExpenditureTrackerWeb.Shared.Services
                 }
             }
             return transactionCategoriesDto;
+        }
+
+        public async Task<CategoryDto> GetByCategoryName(string categoryName, int userId)
+        {
+            var userDto = await userService.GetUserEntity(userId);
+            var transactionCategoryDto = new CategoryDto();
+
+            if (userDto != null)
+            {
+                var transactionCategoryEntity = await dbContext.TransactionCategories
+                    .Include(t => t.TC_TransactionType)
+                    .Where(e => e.TC_User.U_Id == userId && e.TC_Name == categoryName).FirstOrDefaultAsync();
+
+                transactionCategoryDto = categoriesMapper.ToCategoryDto(transactionCategoryEntity);
+
+            }
+            return transactionCategoryDto;
         }
 
         public async Task<CategoryDto> AddNewCategory(CategoryDto categoryDto)
@@ -101,7 +119,7 @@ namespace ExpenditureTrackerWeb.Shared.Services
                 var user = await dbContext.Users.Where(u => u.U_Id == categoryDto.User_Id).FirstOrDefaultAsync();
                 if (user != null)
                 {
-                    var transactionType = await dbContext.TransactionTypes.Where(t => t.TT_Id == categoryDto.TransactionType_Id).FirstOrDefaultAsync();
+                    var transactionType = await dbContext.TransactionTypes.Where(t => t.TT_Name == categoryDto.TransactionType_Name).FirstOrDefaultAsync();
                     if (transactionType != null)
                     {
                         var transactioncategoryEntity = categoriesMapper.ToTransactionCategoryEntity(categoryDto, transactionType, user);
@@ -109,7 +127,7 @@ namespace ExpenditureTrackerWeb.Shared.Services
                     }
                 }
             }
-            
+
             await dbContext.TransactionCategories.AddRangeAsync(transactioncategoryEntities);
             await dbContext.SaveChangesAsync();
         }

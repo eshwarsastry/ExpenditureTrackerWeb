@@ -116,9 +116,9 @@ namespace ExpenditureTrackerWeb.Controllers
             return result;
         }
 
-        //POST: api/ExpenditureLedger/ExtractExpenseDetailsFromBill
-        [HttpPost("ExtractExpenseDetailsFromBill")]
-        public async Task<BillDetailsExtractor> ExtractExpenseDetailsFromBill(IFormFile importFile, [FromForm] int userId)
+        //POST: api/ExpenditureLedger/UploadExpenseDetailsFromBill
+        [HttpPost("UploadExpenseDetailsFromBill")]
+        public async Task<ExpenseDto> UploadExpenseDetailsFromBill(IFormFile importFile, [FromForm] int userId)
         {
             var result = await importDataService.ExtractBillDataAsync(importFile, userId);
             return result;

@@ -20,12 +20,10 @@ namespace ExpenditureTrackerWeb.Shared.Predictor
 
         public async Task<ExpensePredictorResult> PredictExpenses(int userId, int monthOfPrediction, int yearOfPrediction)
         {
-            // Load data (could also use from SQL)
             var data = await expensesService.GetExpensesOfUserforPrediction(userId);
 
             var trainingDataOfUser = mlContext.Data.LoadFromEnumerable(data);
 
-            // Build pipeline (simple regression)
             var pipeline = mlContext.Transforms
                 .Conversion.ConvertType("Month_f", "Month", DataKind.Single)
                 .Append(mlContext.Transforms.Conversion.ConvertType("Year_f", "Year", DataKind.Single))

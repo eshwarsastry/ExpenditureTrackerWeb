@@ -1,6 +1,7 @@
 ﻿using ExpenditureTrackerWeb.AutoGen;
 using ExpenditureTrackerWeb.Shared.DbContexts;
 using ExpenditureTrackerWeb.Shared.Mappers;
+using ExpenditureTrackerWeb.Shared.OCR;
 using ExpenditureTrackerWeb.Shared.Predictor;
 using ExpenditureTrackerWeb.Shared.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -34,7 +35,10 @@ builder.Services.AddScoped<ITransactionTypeService, TransactionTypeService>();
 builder.Services.AddScoped<IExpensesService, ExpensesService>();
 builder.Services.AddScoped<IImportDataService, ImportDataService>();
 builder.Services.AddScoped<IExpenditurePredictor, ExpenditurePredictor>();
-builder.Services.AddScoped<IBillInformationExtractorAgent, BillInformationExtractorAgent>();
+builder.Services.AddScoped<IBillInformationAnalyserAgent, BillInformationAnalyserAgent>();
+builder.Services.AddScoped<IBillInformationExtractor, BillInformationExtractor>();
+builder.Services.AddScoped<IImportCSVDataMapperAgent, ImportCSVDataMapperAgent>();
+
 // Add mappers to the container.
 builder.Services.AddScoped<IUsersMapper, UsersMapper>();
 builder.Services.AddScoped<ICategoriesMapper, CategoriesMapper>();
@@ -47,7 +51,7 @@ builder.Services.AddSwaggerGen();
 
 //Add Context class to the container.
 builder.Services.AddDbContext<ApplicationDbContext>(
-        options => options.UseSqlServer(builder.Configuration.GetConnectionString("ETAppDbConnectionString")));
+        options => options.UseSqlServer(builder.Configuration.GetConnectionString("NewETAppDbConnectionString")));
 
 var app = builder.Build();
 
@@ -67,3 +71,4 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+

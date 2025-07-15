@@ -101,6 +101,43 @@ namespace ExpenditureTrackerWeb.Migrations
                     b.HasKey("TT_Id");
 
                     b.ToTable("TransactionTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            TT_Id = 1,
+                            TT_Name = "Income"
+                        },
+                        new
+                        {
+                            TT_Id = 2,
+                            TT_Name = "Expenditure"
+                        },
+                        new
+                        {
+                            TT_Id = 3,
+                            TT_Name = "Transfer"
+                        },
+                        new
+                        {
+                            TT_Id = 4,
+                            TT_Name = "Investment"
+                        },
+                        new
+                        {
+                            TT_Id = 5,
+                            TT_Name = "Loan"
+                        },
+                        new
+                        {
+                            TT_Id = 6,
+                            TT_Name = "Refund"
+                        },
+                        new
+                        {
+                            TT_Id = 7,
+                            TT_Name = "Other"
+                        });
                 });
 
             modelBuilder.Entity("ExpenditureTrackerWeb.Shared.Entities.User", b =>
@@ -143,7 +180,7 @@ namespace ExpenditureTrackerWeb.Migrations
                     b.HasOne("ExpenditureTrackerWeb.Shared.Entities.User", "EX_User")
                         .WithMany("U_Expense")
                         .HasForeignKey("EX_UserU_Id")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("EX_TransactionCategory");
@@ -156,7 +193,7 @@ namespace ExpenditureTrackerWeb.Migrations
                     b.HasOne("ExpenditureTrackerWeb.Shared.Entities.TransactionType", "TC_TransactionType")
                         .WithMany("TT_TransactionCategories")
                         .HasForeignKey("TC_TransactionTypeTT_Id")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("ExpenditureTrackerWeb.Shared.Entities.User", "TC_User")

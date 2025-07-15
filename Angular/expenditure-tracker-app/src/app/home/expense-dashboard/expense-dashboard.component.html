@@ -1,6 +1,6 @@
 <div class="content-background">
   <div class="content-board">
-    <mat-grid-list cols="4" gutterSize="16px">
+    <mat-grid-list cols="3" gutterSize="16px">
       <mat-grid-tile [rowspan]="1" [colspan]="1">
         <mat-card class="dashboard-card prediction-card" routerLink="../expense-analysis" style="cursor:pointer;">
           <mat-card-content class="dashboard-card-content">
@@ -8,16 +8,6 @@
               <img src="undraw_predictive-analytics.png" alt="analysis Image" class="dashboard-illustration" />
             </div>
             <div class="dashboard-card-title">Expense analysis</div>
-          </mat-card-content>
-        </mat-card>
-      </mat-grid-tile>
-      <mat-grid-tile [rowspan]="1" [colspan]="1">
-        <mat-card class="dashboard-card catgory-card" (click)="openAddTransactionCategoryDialog()">
-          <mat-card-content class="dashboard-card-content">
-            <div class="dashboard-illustration-wrapper">
-              <img src="undraw_logic.png" alt="catgeories Image" class="dashboard-illustration" />
-            </div>
-            <div class="dashboard-card-title">Transaction categories</div>
           </mat-card-content>
         </mat-card>
       </mat-grid-tile>
@@ -54,7 +44,7 @@
           </mat-card-footer>
         </mat-card>
       </mat-grid-tile>
-      <mat-grid-tile [rowspan]="1" [colspan]="3">
+      <mat-grid-tile [rowspan]="1" [colspan]="2">
         <mat-card class="dashboard-card under-construction-card">
           <mat-card-title>Something works</mat-card-title>
           <mat-card-content>

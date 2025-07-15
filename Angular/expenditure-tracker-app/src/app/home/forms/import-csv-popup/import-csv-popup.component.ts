@@ -44,10 +44,8 @@ export class ImportCsvPopupComponent {
       return;
     }
     this.isLoading = true;
-    const formData = new FormData();
-    formData.append('importFile', this.selectedFile);
-    formData.append('userId', this.loggedInUserId.toString());
-    this.importDataService.importData(formData).subscribe({
+
+    this.importDataService.importData(this.selectedFile, this.loggedInUserId).subscribe({
       next: (response) => {
         this.successMessage = response.message;
         this.isLoading = false;

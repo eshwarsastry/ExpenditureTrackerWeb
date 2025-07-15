@@ -1,15 +1,18 @@
 ﻿using ExpenditureTrackerWeb.Shared.Dto;
+using ExpenditureTrackerWeb.Shared.Dto.Agent;
 using ExpenditureTrackerWeb.Shared.Entities;
+using ExpenditureTrackerWeb.Shared.Services;
 
 namespace ExpenditureTrackerWeb.Shared.Mappers
 {
     public interface IExpensesMapper
     {
         public ExpenseDto ToExpenseDto(Expense expense);
+        public ExpenseDto ToExpenseDto(BillDetailsAnalyserDto billDetails, CategoryDto catgeoryDto, UserDto userDto);
         public Expense ToExpenseEntity(ExpenseDto expenseDto, TransactionCategory transactionCategory, User user);
     }
 
-    public class ExpensesMapper: IExpensesMapper
+    public class ExpensesMapper : IExpensesMapper
     {
         public ExpenseDto ToExpenseDto(Expense expense)
         {
@@ -24,6 +27,22 @@ namespace ExpenditureTrackerWeb.Shared.Mappers
                 Amount = expense.EX_Amount,
                 TransactionDate = expense.EX_DateTime,
                 Note = expense.EX_Note,
+            };
+
+        }
+
+        public ExpenseDto ToExpenseDto(BillDetailsAnalyserDto billDetails, CategoryDto catgeoryDto, UserDto userDto)
+        {
+            return new ExpenseDto()
+            {
+                User_Id = userDto.Id,
+                Category_Id = catgeoryDto.Id,
+                Category_Name = catgeoryDto.Name,
+                TransactionType_Id = catgeoryDto.TransactionType_Id,
+                TransactionType_Name = catgeoryDto.TransactionType_Name,
+                Amount = (decimal)billDetails.BillAmount,
+                TransactionDate = billDetails.BillDate,
+                Note = billDetails.Note,
             };
 
         }

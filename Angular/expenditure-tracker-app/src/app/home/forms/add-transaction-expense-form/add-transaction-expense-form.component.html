@@ -1,5 +1,17 @@
 <h2 mat-dialog-title>Add a new Transaction</h2>
-<form [formGroup]="transactionForm" (ngSubmit)="onSave()">
+<div class="autofill-options" style="position:relative;">
+  <ng-container *ngIf="isUploading">
+    <div class="upload-spinner-overlay">
+      <mat-spinner diameter="44"></mat-spinner>
+    </div>
+  </ng-container>
+  <input type="file" #billImageInput accept="image/*" style="display:none" (change)="onBillImageSelected($event)" />
+  <button mat-raised-button color="primary" class="autofill-btn" (click)="triggerFileInput(billImageInput)" [disabled]="isUploading">Autofill from Bill Image</button>
+  <div class="enter-manually-container">
+    <button mat-button color="accent" (click)="enableManualEntry()" *ngIf="!showManualForm">Enter Manually</button>
+  </div>
+</div>
+<form *ngIf="showManualForm" [formGroup]="transactionForm" (ngSubmit)="onSave()">
   <mat-dialog-content class="add-transaction-dialog-content">
     <mat-form-field appearance="fill" class="add-transaction-form-field">
       <mat-label>Transaction Type</mat-label>
@@ -23,6 +35,12 @@
         Category is required
       </mat-error>
     </mat-form-field>
+    <div class="add-category-button-container">
+      <button type="button" mat-button color="primary" (click)="openAddCategoryDialog()" class="add-category-button">
+        <mat-icon>add_circle</mat-icon>
+        Add a new category
+      </button>
+    </div>
     <mat-form-field appearance="fill" class="add-transaction-form-field">
       <mat-label>Choose the transaction date</mat-label>
       <input matInput [matDatepicker]="picker" formControlName="transactionDate">

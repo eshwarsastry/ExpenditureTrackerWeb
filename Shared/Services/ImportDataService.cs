@@ -1,7 +1,10 @@
 ﻿using ExpenditureTrackerWeb.AutoGen;
 using ExpenditureTrackerWeb.Shared.Dto;
 using ExpenditureTrackerWeb.Shared.Dto.Agent;
+using ExpenditureTrackerWeb.Shared.Entities;
 using ExpenditureTrackerWeb.Shared.Enums;
+using ExpenditureTrackerWeb.Shared.Mappers;
+using ExpenditureTrackerWeb.Shared.OCR;
 using System.Globalization;
 
 namespace ExpenditureTrackerWeb.Shared.Services
@@ -10,7 +13,7 @@ namespace ExpenditureTrackerWeb.Shared.Services
     {
         public Task<bool> ImportDataAsync(IFormFile importFile, int userId);
 
-        public Task<BillDetailsExtractor> ExtractBillDataAsync(IFormFile importFile, int userId);
+        public Task<ExpenseDto> ExtractBillDataAsync(IFormFile importFile, int userId);
 
     }
     public class ImportDataService : IImportDataService
@@ -18,14 +21,25 @@ namespace ExpenditureTrackerWeb.Shared.Services
         private readonly ITransactionTypeService transactionTypeService;
         private readonly ITransactionCategoryService transactionCategoryService;
         private readonly IExpensesService expensesService;
-
+        private readonly IBillInformationExtractor billInformationExtractor;
+        private readonly IExpensesMapper expensesMapper;
+        private readonly IUserService userService;
+        private readonly IImportCSVDataMapperAgent importCSVDataMapperAgent;
         public ImportDataService(ITransactionTypeService _transactionTypeService,
             ITransactionCategoryService _transactionCategoryService,
-            IExpensesService _expensesService)
+            IExpensesService _expensesService,
+            IExpensesMapper _expensesMapper,
+            IBillInformationExtractor _billInformationExtractor,
+            IUserService _userService,
+            IImportCSVDataMapperAgent _importCSVDataMapperAgent)
         {
             transactionTypeService = _transactionTypeService;
             transactionCategoryService = _transactionCategoryService;
             expensesService = _expensesService;
+            expensesMapper = _expensesMapper;
+            userService = _userService;
+            billInformationExtractor = _billInformationExtractor;
+            importCSVDataMapperAgent = _importCSVDataMapperAgent;
         }
 
         public async Task<bool> ImportDataAsync(IFormFile importFile, int userId)
@@ -80,10 +94,6 @@ namespace ExpenditureTrackerWeb.Shared.Services
                             {
                                 User_Id = userId,
                                 Name = categoryName,
-                                TransactionType_Id = amountValue > new Decimal(0.00) ?
-                                transactionTypes.Where(transactionTypeEntity => transactionTypeEntity.Id == (int)TransactionTypeEnum.Income).First().Id :
-                                transactionTypes.Where(transactionTypeEntity => transactionTypeEntity.Id == (int)TransactionTypeEnum.Expenditure).First().Id,
-                                // Assuming amount is positive for Income and negative for Expenditure
                             };
                             newTransactionCategories.Add(categoryDto);
                         }
@@ -92,13 +102,11 @@ namespace ExpenditureTrackerWeb.Shared.Services
                             var expenseDto = new ExpenseDto
                             {
                                 User_Id = userId,
-                                Amount = amountValue,
+                                Amount = Math.Abs(amountValue),
                                 TransactionDate = dateValue,
                                 Note = noteValue,
                                 Category_Id = transactionCategories.FirstOrDefault(c => c.Name.Equals(categoryName, StringComparison.OrdinalIgnoreCase))?.Id ?? 0,
-                                TransactionType_Id = amountValue > new Decimal(0.00) ?
-                                    transactionTypes.Where(transactionTypeEntity => transactionTypeEntity.Id == (int)TransactionTypeEnum.Income).First().Id :
-                                    transactionTypes.Where(transactionTypeEntity => transactionTypeEntity.Id == (int)TransactionTypeEnum.Expenditure).First().Id, // Assuming amount is positive for Income and negative for Expenditure
+                                Category_Name = categoryName,
                             };
                             expensesDto.Add(expenseDto);
                         }
@@ -107,9 +115,13 @@ namespace ExpenditureTrackerWeb.Shared.Services
                 }
             }
 
-            // Add the new categories
+            // Map the new catgeories to their transaction types and add the new categories
             if (newTransactionCategories.Count > 0)
             {
+                string inputText = await GetInputTextForAgentAsync(newTransactionCategories, transactionTypes.ToList());
+                var categoryTransactionTypeMapperDtos = await importCSVDataMapperAgent.InitializeAgentsAsync(inputText);
+                newTransactionCategories = GetTransactionTypeIdForCategory(categoryTransactionTypeMapperDtos, newTransactionCategories);
+                
                 await transactionCategoryService.AddBulkCategories(newTransactionCategories);
             }
             // Add the expenses
@@ -121,8 +133,10 @@ namespace ExpenditureTrackerWeb.Shared.Services
             return true;
         }
 
-        public async Task<BillDetailsExtractor> ExtractBillDataAsync(IFormFile imageFile, int userId)
+        public async Task<ExpenseDto> ExtractBillDataAsync(IFormFile imageFile, int userId)
         {
+            var user = await userService.GetUserEntity(userId);
+
             if (imageFile == null || imageFile.Length == 0)
             {
                 throw new ArgumentException("Import file is empty or null.");
@@ -135,15 +149,72 @@ namespace ExpenditureTrackerWeb.Shared.Services
             // Get byte array
             var imageBytes = memoryStream.ToArray();
 
-            // Convert to base64 string
-            var base64Image = Convert.ToBase64String(imageBytes);
-
+            var billInformationText = billInformationExtractor.BillInformationOCRExtractor(imageBytes);
+            var userTransactionCategories = await transactionCategoryService.GetAllByUserId(userId);
+            
             // Pass the base64 string to the agent
-            var billDetailsExtractorAgent = new BillInformationExtractorAgent();
+            var billDetailsExtractorAgent = new BillInformationAnalyserAgent();
+            try
+            {
+                string listOfCategories = await GetInputTextForAgentAsync(userTransactionCategories.ToList());
+                var extractedBillDetails = await billDetailsExtractorAgent.InitializeAgentsAsync(billInformationText, listOfCategories);
+                if (extractedBillDetails == null)
+                {
+                    throw new InvalidOperationException("No bill details extracted from the image.");
+                }
+                var transactionCategory = await transactionCategoryService.GetByCategoryName(extractedBillDetails.Category, userId);
+                if (transactionCategory == null)
+                {
+                    throw new InvalidOperationException($"Category '{extractedBillDetails.Category}' not found for user with ID {userId}.");
+                }
+                var result = expensesMapper.ToExpenseDto(extractedBillDetails, transactionCategory, user);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions that occur during the extraction process
+                throw new InvalidOperationException("An error occurred while extracting bill details.", ex);
+            }
+        }
 
-            var result = await billDetailsExtractorAgent.InitializeAgentsAsync(base64Image);
 
-            return result;
+        private async Task<string> GetInputTextForAgentAsync(List<CategoryDto> newCatgories, List<TransactionTypeDto> transactionTypeDtos)
+        {
+            var categoryNames = newCatgories
+                .Select(c => c.Name)
+                .Distinct()
+                .ToArray();
+
+            var transactionTypeNames = transactionTypeDtos
+                .Select(c => c.TransactionType)
+                .Distinct()
+                .ToArray();
+
+            return $"Categories: [{string.Join(", ", categoryNames)}], Transaction_Types: [{string.Join(", ", transactionTypeNames)}]";
+        }
+
+        private async Task<string> GetInputTextForAgentAsync(List<CategoryDto> newCatgories)
+        {
+            var categoryNames = newCatgories
+                .Select(c => c.Name)
+                .Distinct()
+                .ToArray();
+
+            return $"Categories: [{string.Join(", ", categoryNames)}]]";
+        }
+
+        private List<CategoryDto> GetTransactionTypeIdForCategory(List<CategoryTransactionTypeMapperDto> categoryTransactionTypeMapperDtos,
+            List<CategoryDto> newCatgories)
+        {
+            foreach (var newCategory in newCatgories)
+            {
+                var categoryMapper = categoryTransactionTypeMapperDtos.FirstOrDefault(c => c.CategoryName.Equals(newCategory.Name, StringComparison.OrdinalIgnoreCase));
+                if (categoryMapper != null)
+                {
+                    newCategory.TransactionType_Name = categoryMapper.TransactionType;
+                }
+            }
+            return newCatgories;
         }
     }
 }
